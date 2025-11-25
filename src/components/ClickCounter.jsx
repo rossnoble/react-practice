@@ -1,19 +1,18 @@
 import { useState } from 'react'
 
-const MAX_COUNT = 10
-const MIN_COUNT = -5
-
-function ExampleCard() {
+function ExampleCard({ minCount = 0, maxCount = 10 }) {
   const [clickCount, setClickCount] = useState(0)
 
   const handleIncrement = () => {
-    setClickCount(Math.min(MAX_COUNT, clickCount + 1))
+    // Increment count unless above max
+    setClickCount(Math.min(maxCount, clickCount + 1))
   }
 
   const handleDecrement = () => {
-    // Decreate count but do not permit negative values
-    setClickCount(Math.max(MIN_COUNT, clickCount - 1))
+    // Decrement count unless below min
+    setClickCount(Math.max(minCount, clickCount - 1))
   }
+
   const handleReset = () => setClickCount(0)
 
   return (
@@ -22,9 +21,7 @@ function ExampleCard() {
       <p className="text-gray-600 mb-4">
         Click on the buttons to increase, decrease and reset the counter.
       </p>
-      <p className="text-gray-700 mb-6 border-2 border-dashed border-gray-300 p-2">
-        Number of clicks: {clickCount}
-      </p>
+      <p className="text-2xl font-semibold text-gray-700 mb-6">{clickCount}</p>
 
       <div className="flex flex-col md:flex-row gap-2">
         <button

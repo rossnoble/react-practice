@@ -10,8 +10,7 @@ function App() {
         </header>
 
         <div className="grid gap-6">
-          <ClickCounter />
-          <ClickCounter />
+          <ClickCounter minCount={-5} maxCount={5} />
         </div>
       </div>
     </div>
