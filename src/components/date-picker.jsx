@@ -1,12 +1,6 @@
-import { ExampleCard } from '../ExampleCard'
-
 export function DatePicker() {
   const dateOfWeek = getDayOfWeek()
-  return (
-    <ExampleCard title="Date picker">
-      <p>Date of week: {dateOfWeek}</p>
-    </ExampleCard>
-  )
+  return <p>Date of week: {dateOfWeek}</p>
 }
 
 const getDateOfWeekInt = () => {

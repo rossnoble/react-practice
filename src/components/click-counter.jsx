@@ -16,11 +16,7 @@ export function ClickCounter({ minCount = 0, maxCount = 10 }) {
   const handleReset = () => setClickCount(0)
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-2">Click counter</h2>
-      <p className="text-gray-600 mb-4">
-        Click on the buttons to increase, decrease and reset the counter.
-      </p>
+    <div>
       <p className="text-4xl font-bold text-gray-700 mb-6">{clickCount}</p>
 
       <div className="flex flex-col md:flex-row gap-2">
