@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-function ExampleCard({ minCount = 0, maxCount = 10 }) {
+export function ClickCounter({ minCount = 0, maxCount = 10 }) {
   const [clickCount, setClickCount] = useState(0)
 
   const handleIncrement = () => {
@@ -21,7 +21,7 @@ function ExampleCard({ minCount = 0, maxCount = 10 }) {
       <p className="text-gray-600 mb-4">
         Click on the buttons to increase, decrease and reset the counter.
       </p>
-      <p className="text-2xl font-semibold text-gray-700 mb-6">{clickCount}</p>
+      <p className="text-4xl font-bold text-gray-700 mb-6">{clickCount}</p>
 
       <div className="flex flex-col md:flex-row gap-2">
         <button
@@ -46,5 +46,3 @@ function ExampleCard({ minCount = 0, maxCount = 10 }) {
     </div>
   )
 }
-
-export default ExampleCard

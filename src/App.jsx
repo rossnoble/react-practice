@@ -1,4 +1,5 @@
-import ClickCounter from './components/ClickCounter'
+import { ClickCounter } from './components/ClickCounter'
+import { DatePicker } from './components/DatePicker'
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
 
         <div className="grid gap-6">
           <ClickCounter minCount={-5} maxCount={5} />
+          <DatePicker />
         </div>
       </div>
     </div>
