@@ -14,14 +14,14 @@ const components = [
 function Home() {
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-semibold text-gray-800">Components</h2>
+      <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">Components</h2>
       <div className="grid gap-3">
         {components.map(c => (
           <Link href={`/components/${c.id}`} key={c.id}>
-            <a className="block bg-white hover:bg-gray-50 border border-gray-200 rounded-lg p-4 transition-colors">
-              <h3 className="font-semibold text-gray-900">{c.title}</h3>
-              <p className="text-sm text-gray-600">{c.description}</p>
-            </a>
+            <div className="block bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-lg p-4 transition-colors">
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100">{c.title}</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">{c.description}</p>
+            </div>
           </Link>
         ))}
       </div>
@@ -31,17 +31,19 @@ function Home() {
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
       <div className="max-w-2xl mx-auto">
         <header className="mb-8">
           <Link href="/">
-            <a className="inline-block">
-              <h1 className="text-4xl font-bold text-gray-900 mb-2 hover:text-blue-600 transition-colors">
+            <div className="inline-block">
+              <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                 React Practice Playground
               </h1>
-            </a>
+            </div>
           </Link>
-          <p className="text-gray-600">Build and test standalone components here</p>
+          <p className="text-gray-600 dark:text-gray-400">
+            Build and test standalone components here
+          </p>
         </header>
 
         <div className="grid gap-6">
