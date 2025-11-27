@@ -1,13 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react'
 
-type ItemWithId = {
-  id: string | number
-}
-
-function isItemWithId(item: unknown): item is ItemWithId {
-  return (item as ItemWithId).id !== 'undefined'
-}
-
 type VirtualListProps<T> = {
   items: T[]
   itemHeight?: number
@@ -41,6 +33,7 @@ export function VirtualList<T>({
   useEffect(() => {
     const sliceMsg = `Show slice: [${visibleStartIndex}, ${visibleEndIndex}]`
     const countMsg = `Item count: ${visibleEndIndex - visibleStartIndex}`
+
     console.log(sliceMsg, countMsg)
   }, [visibleStartIndex, visibleEndIndex])
 
@@ -54,7 +47,7 @@ export function VirtualList<T>({
 
   return (
     <div
-      className={`p-1 overflow-x-auto overflow-y-auto border-1 border-gray-600 hover:border-sky-600 rounded-md outline outline-3 outline-gray-300 hover:outline-sky-300 flex flex-col relative`}
+      className={`p-1 overflow-x-auto overflow-y-auto border-1 border-gray-600 hover:border-sky-600 rounded-md outline outline-3 outline-transparent hover:outline-sky-200 flex flex-col relative duration-300 transition-all`}
       style={{ height: `${containerHeight}px` }}
       onScroll={handleScroll}
     >
@@ -79,4 +72,12 @@ export function VirtualList<T>({
       <div style={{ paddingBottom: `${paddingBottom}px` }} />
     </div>
   )
+}
+
+type ItemWithId = {
+  id: string | number
+}
+
+function isItemWithId(item: unknown): item is ItemWithId {
+  return (item as ItemWithId).id !== 'undefined'
 }

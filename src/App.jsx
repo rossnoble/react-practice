@@ -17,7 +17,7 @@ function App() {
             </div>
           </Link>
           <p className="text-gray-600 dark:text-gray-400">
-            Build and test standalone components here
+            Fun exercises for learning and interview and prep
           </p>
         </header>
 

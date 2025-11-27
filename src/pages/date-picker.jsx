@@ -1,5 +1,5 @@
 import { DatePicker } from '../components/date-picker'
-import { ComponentCard } from '../components/component-card'
+import { ComponentCard } from '../components/shared/component-card'
 
 export function DatePickerPage() {
   return (

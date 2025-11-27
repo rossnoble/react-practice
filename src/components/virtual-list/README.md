@@ -8,6 +8,7 @@ Visual example:
 
 Total items: 10,000 (itemHeight: 50px each)
 
+```
 ┌─────────────────────┐
 │ [Padding Top]       │ ← 2500px (items 0-49 not rendered)
 │ Item 50             │ ← Actually rendered
@@ -17,7 +18,13 @@ Total items: 10,000 (itemHeight: 50px each)
 │ Item 65             │ ← Actually rendered
 │ [Padding Bottom]    │ ← 496,750px (items 66-9999 not rendered)
 └─────────────────────┘
+```
 
 Total scroll height: 500,000px (10,000 × 50px)
 Rendered items: Only 16 items in viewport
 
+## Task 1
+
+- [ ] Create a generic component that handles the virtualization and lets the consumer do the rendering
+- [ ] Assume the item height is fixed and passed as a property
+- [ ] Accept a container height property and make sure the component scales as the height changes
