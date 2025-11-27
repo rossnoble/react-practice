@@ -27,7 +27,7 @@ export function VirtualListPage() {
         items={items}
         containerHeight={600}
         renderItem={(item: TodoItem) => (
-          <div className="border-b border-gray-300 p-3 hover:bg-gray-200 dark:bg-gray-800">
+          <div className="w-full border-b border-gray-300 px-2 py-1 hover:bg-gray-100 dark:bg-gray-800">
             <h3 className="font-semibold">{item.title}</h3>
             <p>{item.description}</p>
           </div>
