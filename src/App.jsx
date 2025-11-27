@@ -1,33 +1,8 @@
 import { Route, Link } from 'wouter'
+import { HomePage } from './pages/home'
 import { ClickCounterPage } from './pages/click-counter'
 import { DatePickerPage } from './pages/date-picker'
-
-const components = [
-  {
-    title: 'Click counter',
-    description: 'Simple counter with increment/decrement',
-    id: 'click-counter',
-  },
-  { title: 'Date Picker', description: 'Date picker from scratch', id: 'date-picker' },
-]
-
-function Home() {
-  return (
-    <div className="space-y-4">
-      <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">Components</h2>
-      <div className="grid gap-3">
-        {components.map(c => (
-          <Link href={`/components/${c.id}`} key={c.id}>
-            <div className="block bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-lg p-4 transition-colors">
-              <h3 className="font-semibold text-gray-900 dark:text-gray-100">{c.title}</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{c.description}</p>
-            </div>
-          </Link>
-        ))}
-      </div>
-    </div>
-  )
-}
+import { VirtualListPage } from './pages/virtual-list'
 
 function App() {
   return (
@@ -47,9 +22,13 @@ function App() {
         </header>
 
         <div className="grid gap-6">
-          <Route path="/" component={Home} />
-          <Route path="/components/click-counter" component={ClickCounterPage} />
+          <Route path="/" component={HomePage} />
+          <Route
+            path="/components/click-counter"
+            component={ClickCounterPage}
+          />
           <Route path="/components/date-picker" component={DatePickerPage} />
+          <Route path="/components/virtual-list" component={VirtualListPage} />
         </div>
       </div>
     </div>
