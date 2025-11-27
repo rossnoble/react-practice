@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { VirtualList } from '../components/virtual-list'
 import { ComponentCard } from '../components/component-card'
 
@@ -18,18 +20,55 @@ export const generateItems = (count: number): TodoItem[] => {
 }
 
 export function VirtualListPage() {
-  const items = generateItems(100)
+  const [items, setItems] = React.useState(generateItems(10_000))
   const title = `Virtual List (${items.length} items)`
+
+  const [containerHeight, setContainerHeight] = React.useState(600)
+  const handleContainerHeightChange = (
+    ev: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newValue = parseInt(ev.target.value)
+    setContainerHeight(newValue || 0)
+  }
+
+  const handleDeleteClick = (itemId: TodoItem['id']) => {
+    const filtered = items.filter(item => item.id !== itemId)
+    setItems(filtered)
+  }
 
   return (
     <ComponentCard title={title}>
+      <label htmlFor="container-height">Container height:</label>
+      <input
+        id="container-height"
+        type="number"
+        value={containerHeight}
+        onChange={handleContainerHeightChange}
+        step={25}
+        min={100}
+        max={1000}
+        className="border border-gray-300 p-1 mb-4"
+      />
+
       <VirtualList
         items={items}
-        containerHeight={600}
+        containerHeight={containerHeight}
+        itemHeight={65}
         renderItem={(item: TodoItem) => (
-          <div className="w-full border-b border-gray-300 px-2 py-1 hover:bg-gray-100 dark:bg-gray-800">
-            <h3 className="font-semibold">{item.title}</h3>
-            <p>{item.description}</p>
+          <div className="w-full border-b border-gray-300 px-3 py-2 hover:bg-gray-100 dark:bg-gray-800 flex justify-between group">
+            <div>
+              <h3 className="font-semibold">{item.title}</h3>
+              <p>{item.description}</p>
+            </div>
+
+            <div className="m-1 flex flex-col justify-start">
+              <button
+                onClick={() => handleDeleteClick(item.id)}
+                className="hidden group-hover:block size-5 bg-red-300 hover:bg-red-400 active:bg-red-700 text-white text-xs rounded-sm"
+              >
+                &#10005;
+              </button>
+            </div>
           </div>
         )}
       />

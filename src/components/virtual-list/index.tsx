@@ -54,7 +54,7 @@ export function VirtualList<T>({
 
   return (
     <div
-      className={`p-1 overflow-x-auto overflow-y-auto border-1 border-sky-600 rounded-md outline outline-3 outline-sky-300 flex flex-col relative`}
+      className={`p-1 overflow-x-auto overflow-y-auto border-1 border-gray-600 hover:border-sky-600 rounded-md outline outline-3 outline-gray-300 hover:outline-sky-300 flex flex-col relative`}
       style={{ height: `${containerHeight}px` }}
       onScroll={handleScroll}
     >
@@ -69,7 +69,7 @@ export function VirtualList<T>({
               height: `${itemHeight}px`,
               top: (visibleStartIndex + index) * itemHeight,
             }}
-            className="absolute w-full flex"
+            className="absolute right-0 left-0"
           >
             {renderItem(item)}
           </div>
