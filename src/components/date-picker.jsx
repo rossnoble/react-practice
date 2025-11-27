@@ -50,6 +50,7 @@ export function DatePicker() {
   const firstDayOfMonth = getFirstDayOfMonth(year, month)
 
   const handleChangeMonth = value => {
+    jj
     if (parseInt(value) <= MONTHS_IN_YEAR.length - 1) {
       setMonth(value)
     }
@@ -59,10 +60,11 @@ export function DatePicker() {
     const valueInt = parseInt(value)
 
     if (valueInt > daysInMonth) {
+      // Move to first of next month
       setDay(1)
       setMonth(month + 1)
     } else if (valueInt < 1) {
-      // FIXME: It should be the number of days in the previous month
+      // Move to previous
       setDay(getDaysInMonth(year, month - 1))
       setMonth(month - 1)
     } else {
@@ -116,7 +118,7 @@ export function DatePicker() {
         </div>
       </div>
 
-      <div className="grid grid-cols-[minmax(120px,_1fr)_2fr] gap-2">
+      <p className="grid grid-cols-[minmax(120px,_1fr)_2fr] gap-2 border-2 border-dashed dark:border-gray-700 p-3 text-sm">
         <span>Day</span>
         <span>{day}</span>
 
@@ -136,7 +138,7 @@ export function DatePicker() {
 
         <span>First day of month</span>
         <span>{firstDayOfMonth}</span>
-      </div>
+      </p>
 
       <Calendar year={year} month={month} day={day} handleDateClick={handleDateClick} />
     </div>
@@ -161,7 +163,7 @@ function Calendar({ year, month, day, handleDateClick }) {
   const getStateClasses = date => {
     return date === day
       ? 'dark:bg-blue-500 dark:hover:bg-blue-500'
-      : 'dark:bg-gray-700 dark:hover:bg-blue-600 cursor-pointer'
+      : 'dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer'
   }
 
   return (
@@ -194,3 +196,5 @@ function Calendar({ year, month, day, handleDateClick }) {
     </div>
   )
 }
+
+function MetaData({ year, month, day }) {}
