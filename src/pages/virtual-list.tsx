@@ -47,7 +47,7 @@ export function VirtualListPage() {
         step={25}
         min={100}
         max={1000}
-        className="border border-gray-300 p-1 mb-4"
+        className="mb-4 border border-gray-300 p-1"
       />
 
       <VirtualList
@@ -55,7 +55,7 @@ export function VirtualListPage() {
         containerHeight={containerHeight}
         itemHeight={65}
         renderItem={(item: TodoItem) => (
-          <div className="w-full border-b border-gray-300 px-3 py-2 hover:bg-gray-100 dark:bg-gray-800 flex justify-between group">
+          <div className="group flex w-full justify-between border-b border-gray-300 px-3 py-2 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-700">
             <div>
               <h3 className="font-semibold">{item.title}</h3>
               <p>{item.description}</p>
@@ -64,7 +64,7 @@ export function VirtualListPage() {
             <div className="m-1 flex flex-col justify-start">
               <button
                 onClick={() => handleDeleteClick(item.id)}
-                className="hidden group-hover:block size-5 bg-red-300 hover:bg-red-400 active:bg-red-700 text-white text-xs rounded-sm"
+                className="hidden size-5 rounded-sm bg-red-300 text-xs text-white group-hover:block hover:bg-red-400 active:bg-red-700"
               >
                 &#10005;
               </button>

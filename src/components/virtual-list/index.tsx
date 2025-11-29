@@ -47,13 +47,13 @@ export function VirtualList<T>({
 
   return (
     <div
-      className={`p-1 overflow-x-auto overflow-y-auto border-1 border-gray-600 hover:border-sky-600 rounded-md outline outline-3 outline-transparent hover:outline-sky-200 flex flex-col relative duration-300 transition-all`}
+      className={`relative flex flex-col overflow-x-auto overflow-y-auto rounded-md border-1 border-gray-600 p-1 outline outline-3 outline-transparent transition-all duration-300 hover:border-sky-600 hover:outline-sky-200 dark:hover:border-sky-900 dark:hover:outline-sky-900`}
       style={{ height: `${containerHeight}px` }}
       onScroll={handleScroll}
     >
-      <div style={{ paddingTop: `${paddingTop}px` }} />
-
       <div>
+        <div style={{ height: `${paddingTop}px` }} />
+
         {visibleItems.map((item, index) => (
           <div
             key={getIndex(item, index)}
@@ -67,9 +67,9 @@ export function VirtualList<T>({
             {renderItem(item)}
           </div>
         ))}
-      </div>
 
-      <div style={{ paddingBottom: `${paddingBottom}px` }} />
+        <div style={{ height: `${paddingBottom}px` }} />
+      </div>
     </div>
   )
 }
