@@ -4,6 +4,7 @@ import { HomePage } from './pages/home'
 import { ClickCounterPage } from './pages/click-counter'
 import { DatePickerPage } from './pages/date-picker'
 import { VirtualListPage } from './pages/virtual-list'
+import { SearchHighlightsPage } from './pages/search-highlights'
 
 function App() {
   const [isDark, setIsDark] = useState(
@@ -46,6 +47,10 @@ function App() {
           />
           <Route path="/components/date-picker" component={DatePickerPage} />
           <Route path="/components/virtual-list" component={VirtualListPage} />
+          <Route
+            path="/components/search-highlights"
+            component={SearchHighlightsPage}
+          />
         </div>
       </div>
     </div>

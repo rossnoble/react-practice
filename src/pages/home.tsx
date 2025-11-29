@@ -22,6 +22,11 @@ const components: PracticeComponent[] = [
     description: 'Generic virtual list',
     id: 'virtual-list',
   },
+  {
+    title: 'Search Highlights',
+    description: 'Search with autocomplete suggestions',
+    id: 'search-highlights',
+  },
 ]
 
 export function HomePage() {
@@ -33,7 +38,7 @@ export function HomePage() {
       <div className="grid gap-3">
         {components.map(c => (
           <Link href={`/components/${c.id}`} key={c.id}>
-            <div className="block bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-lg p-4 transition-colors">
+            <div className="block rounded-lg border border-gray-200 bg-white p-4 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
               <h3 className="font-semibold text-gray-900 dark:text-gray-100">
                 {c.title}
               </h3>
