@@ -14,6 +14,8 @@ const fixedResults = [
   { name: 'Antimicrobial Corp', ticker: 'AMIC' },
   { name: 'Alphabet', ticker: 'GOOG' },
   { name: 'Meta Platforms, Inc.', ticker: 'META' },
+  { name: 'The Microwave Company', ticker: 'MCRO' },
+  { name: 'The Tiny Tiny Company', ticker: 'MCRO' },
 ].map((item, idx) => ({ id: idx + 1, ...item }))
 
 const generateMockData = (count: number): Company[] => {
@@ -30,14 +32,18 @@ const MOCK_DATA = generateMockData(500)
 console.log({ MOCK_DATA })
 
 export const searchAPI = (query: string): Promise<Company[]> => {
-  const delay = Math.random() * 2000 // Random delay
+  const delay = Math.random() * 1000 // Random delay
 
   console.info(`Searching for '${query}'. Expect response in ${delay}ms`)
 
-  return new Promise(resolve => {
-    // Simulate network delay
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (!query || query.length < 2) return resolve([])
+
+      // Random failure
+      if (Math.floor(Math.random() * 10) === 0) {
+        return reject('Failed to return results')
+      }
 
       // Matches by name or by ticker
       const results = MOCK_DATA.filter(

@@ -5,7 +5,7 @@ export function SearchHighlightsPage() {
   return (
     <ComponentCard
       title="Search Highlights"
-      description="Searching for 'go', 'group' or 'micro' will show good results"
+      description="Terms like 'micro', 'go', 'tiny' or 'group' will show good results"
     >
       <SearchHighlights />
     </ComponentCard>

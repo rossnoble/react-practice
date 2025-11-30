@@ -5,6 +5,7 @@ import { searchAPI, type Company } from './mock-api'
 export function SearchHighlights() {
   const [text, setText] = useState('')
   const [query, setQuery] = useState('')
+  const [error, setError] = useState('')
   const [results, setResults] = useState<Company[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -14,7 +15,9 @@ export function SearchHighlights() {
   /* @ts-ignore */
   const handleTextChange = async ev => {
     const currentValue = ev.target.value
+
     setText(currentValue)
+    setError('')
 
     // Clear previous timeout if present
     if (timeoutRef.current) {
@@ -26,14 +29,21 @@ export function SearchHighlights() {
       const requestId = requestRef.current
 
       setIsLoading(true)
-      const results = await searchAPI(currentValue)
 
-      // Only update if request id matches most recent request
-      if (requestId === requestRef.current) {
-        setQuery(currentValue)
-        setResults(results)
+      try {
+        const results = await searchAPI(currentValue)
+
+        // Only update if request id matches most recent request
+        if (requestId === requestRef.current) {
+          setQuery(currentValue)
+          setResults(results)
+        }
+      } catch (err) {
+        setError('Request failed. Please try again')
+        setResults([])
+      } finally {
+        setIsLoading(false)
       }
-      setIsLoading(false)
     }, 300)
   }
 
@@ -41,20 +51,22 @@ export function SearchHighlights() {
   const handleFormSubmit = async event => {
     event.preventDefault()
 
-    // Skip search if query has not changed
-    if (query === text) return
-
     setIsLoading(true)
     setQuery(text)
+    setError('')
 
-    const results = await searchAPI(text)
-    setResults(results)
-    setIsLoading(false)
+    try {
+      const results = await searchAPI(text)
+      setResults(results)
+    } catch (err) {
+      setError('Request failed. Please try again')
+      setResults([])
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const getResultTitle = () => {
-    if (!query) return 'Start typing to search'
-
     if (results.length) {
       return `Found ${results.length} results`
     }
@@ -70,8 +82,8 @@ export function SearchHighlights() {
             type="text"
             id="query"
             value={text}
+            placeholder="Search by company name or ticker"
             onChange={handleTextChange}
-            // onKeyDown={handleQueryKeyUp}
             className="flex-auto border border-gray-300 p-2"
           />
 
@@ -84,11 +96,17 @@ export function SearchHighlights() {
         </div>
       </form>
 
+      {error && <p className="text-red-600">{error}</p>}
+
       {isLoading ? (
         <p>Loading...</p>
-      ) : (
+      ) : !error ? (
         <div>
-          <h2 className="mb-4 text-lg font-bold">{getResultTitle()}</h2>
+          {!query ? (
+            <p>Start typing to search...</p>
+          ) : (
+            <h2 className="mb-4 text-lg font-bold">{getResultTitle()}</h2>
+          )}
           {results.map(result => (
             <div
               key={result.id}
@@ -103,7 +121,7 @@ export function SearchHighlights() {
             </div>
           ))}
         </div>
-      )}
+      ) : null}
     </div>
   )
 }
