@@ -17,11 +17,11 @@ See `mock-api.ts` for details.
 ## Requirements
 
 ### Core Functionality
-- [ ] Search input that debounces API calls (300ms delay)
-- [ ] Display search results in a list below the input
-- [ ] Highlight matching text in search results
-- [ ] Show loading spinner while search is in progress
-- [ ] Handle empty states ("Start typing to search", "No results found")
+- [x] Display search results in a list below the input
+- [x] Search input that debounces API calls (300ms delay)
+- [x] Highlight matching text in search results
+- [x] Show loading spinner while search is in progress
+- [x] Handle empty states ("Start typing to search", "No results found")
 
 ### Edge Cases & Error Handling
 - [ ] Handle race conditions (older requests finishing after newer ones)

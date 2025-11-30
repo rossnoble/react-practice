@@ -30,14 +30,14 @@ const MOCK_DATA = generateMockData(500)
 console.log({ MOCK_DATA })
 
 export const searchAPI = (query: string): Promise<Company[]> => {
-  const delay = 300 + Math.random() * 200 // Random 300-500ms delay
+  const delay = Math.random() * 2000 // Random delay
+
+  console.info(`Searching for '${query}'. Expect response in ${delay}ms`)
 
   return new Promise(resolve => {
     // Simulate network delay
     setTimeout(() => {
-      if (!query || query.length < 2) {
-        return resolve([])
-      }
+      if (!query || query.length < 2) return resolve([])
 
       // Matches by name or by ticker
       const results = MOCK_DATA.filter(
@@ -46,6 +46,6 @@ export const searchAPI = (query: string): Promise<Company[]> => {
           item.ticker.toLowerCase().includes(query.toLowerCase())
       )
       resolve(results)
-    }, delay) // Random 300-500ms delay
+    }, delay)
   })
 }

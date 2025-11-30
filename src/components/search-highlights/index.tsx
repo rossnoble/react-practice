@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 import { searchAPI, type Company } from './mock-api'
 
@@ -6,18 +6,60 @@ export function SearchHighlights() {
   const [text, setText] = useState('')
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<Company[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+
+  const timeoutRef = useRef<number | undefined>(undefined)
+  const requestRef = useRef(0)
 
   /* @ts-ignore */
-  const handleTextChange = ev => {
-    setText(ev.target.value)
+  const handleTextChange = async ev => {
+    const currentValue = ev.target.value
+    setText(currentValue)
+
+    // Clear previous timeout if present
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+
+    timeoutRef.current = setTimeout(async () => {
+      requestRef.current = requestRef.current + 1
+      const requestId = requestRef.current
+
+      setIsLoading(true)
+      const results = await searchAPI(currentValue)
+
+      // Only update if request id matches most recent request
+      if (requestId === requestRef.current) {
+        setQuery(currentValue)
+        setResults(results)
+      }
+      setIsLoading(false)
+    }, 300)
   }
 
   /* @ts-ignore */
   const handleFormSubmit = async event => {
     event.preventDefault()
+
+    // Skip search if query has not changed
+    if (query === text) return
+
+    setIsLoading(true)
     setQuery(text)
-    const results = await searchAPI(query)
+
+    const results = await searchAPI(text)
     setResults(results)
+    setIsLoading(false)
+  }
+
+  const getResultTitle = () => {
+    if (!query) return 'Start typing to search'
+
+    if (results.length) {
+      return `Found ${results.length} results`
+    }
+
+    return 'No results found'
   }
 
   return (
@@ -29,36 +71,39 @@ export function SearchHighlights() {
             id="query"
             value={text}
             onChange={handleTextChange}
+            // onKeyDown={handleQueryKeyUp}
             className="flex-auto border border-gray-300 p-2"
           />
 
           <button
             type="submit"
-            className="border border-gray-300 bg-gray-100 p-2 text-gray-600"
+            className="cursor-pointer border border-gray-300 bg-gray-100 p-2 text-gray-600 active:bg-gray-200 active:text-gray-400"
           >
             Search
           </button>
         </div>
       </form>
 
-      <div>
-        <h2 className="mb-4 text-lg font-bold">
-          Found {results.length} results
-        </h2>
-        {results.map(result => (
-          <div
-            key={result.id}
-            data-name={result.name}
-            data-id={result.id}
-            data-ticker={result.ticker}
-          >
-            <p>
-              <Highlight haystack={result.name} needle={query} /> (
-              <Highlight haystack={result.ticker} needle={query} />)
-            </p>
-          </div>
-        ))}
-      </div>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <div>
+          <h2 className="mb-4 text-lg font-bold">{getResultTitle()}</h2>
+          {results.map(result => (
+            <div
+              key={result.id}
+              data-name={result.name}
+              data-id={result.id}
+              data-ticker={result.ticker}
+            >
+              <p>
+                <Highlight haystack={result.name} needle={query} /> (
+                <Highlight haystack={result.ticker} needle={query} />)
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

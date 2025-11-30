@@ -22,7 +22,7 @@ function App() {
         <header className="relative mb-8">
           <button
             onClick={toggleDark}
-            className="absolute top-0 right-0 flex size-8 items-center justify-center rounded-md bg-gray-200 p-2 transition-colors hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700"
+            className="absolute top-0 right-0 flex size-8 items-center justify-center rounded-md border-1 border-gray-300 bg-gray-100 p-2 transition-colors hover:bg-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
             aria-label="Toggle dark mode"
           >
             {isDark ? '☀️' : '🌙'}
