@@ -83,7 +83,7 @@ export function SearchHighlights() {
             value={text}
             placeholder="Search by company name or ticker"
             onChange={handleTextChange}
-            className="flex-auto border border-gray-300 p-2"
+            className="flex-auto border border-gray-300 bg-white p-2"
           />
 
           <button

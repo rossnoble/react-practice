@@ -4,7 +4,7 @@ import { ComponentCard } from '../components/shared/component-card.jsx'
 export function SearchHighlightsPage() {
   return (
     <ComponentCard
-      title="Search Highlights"
+      title="Search highlights"
       description="Terms like 'micro', 'go', 'tiny' or 'group' will show good results"
     >
       <SearchHighlights />
