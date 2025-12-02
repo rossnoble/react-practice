@@ -25,8 +25,7 @@ export function SearchHighlights() {
     }
 
     timeoutRef.current = setTimeout(async () => {
-      requestRef.current = requestRef.current + 1
-      const requestId = requestRef.current
+      const requestId = (requestRef.current += 1)
 
       setIsLoading(true)
 

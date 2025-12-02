@@ -1,12 +1,12 @@
 import { Link } from 'wouter'
 
-type PracticeComponent = {
+type Challenge = {
   id: string
   title: string
   description: string
 }
 
-const components: PracticeComponent[] = [
+const challenges: Challenge[] = [
   {
     title: 'Click counter',
     description: 'Simple counter with increment/decrement',
@@ -24,7 +24,7 @@ const components: PracticeComponent[] = [
   },
   {
     title: 'Search Highlights',
-    description: 'Search with autocomplete suggestions',
+    description: 'Search as you type with result highlighting',
     id: 'search-highlights',
   },
 ]
@@ -36,14 +36,14 @@ export function HomePage() {
         Components
       </h2>
       <div className="grid gap-3">
-        {components.map(c => (
-          <Link href={`/components/${c.id}`} key={c.id}>
+        {challenges.map(challenge => (
+          <Link href={`/challenges/${challenge.id}`} key={challenge.id}>
             <div className="block rounded-lg border border-gray-200 bg-white p-4 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
               <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                {c.title}
+                {challenge.title}
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                {c.description}
+                {challenge.description}
               </p>
             </div>
           </Link>
