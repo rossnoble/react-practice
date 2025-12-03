@@ -1,4 +1,4 @@
-import { SearchHighlights } from '../components/search-highlights'
+import { SearchHighlights } from '../challenges/search-highlights'
 import { ComponentCard } from '../components/shared/component-card.jsx'
 
 export function SearchHighlightsPage() {

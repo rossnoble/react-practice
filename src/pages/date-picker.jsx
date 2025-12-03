@@ -1,4 +1,4 @@
-import { DatePicker } from '../components/date-picker'
+import { DatePicker } from '../challenges/date-picker'
 import { ComponentCard } from '../components/shared/component-card'
 
 export function DatePickerPage() {

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { VirtualList } from '../components/virtual-list'
+import { VirtualList } from '../challenges/virtual-list'
 import { ComponentCard } from '../components/shared/component-card'
 
 type TodoItem = {
