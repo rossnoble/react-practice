@@ -35,10 +35,9 @@ export const PreviewLayout = ({
         </div>
       </header>
 
-      <div className="mx-auto max-w-2xl px-2 py-8">
+      <div className="mx-auto max-w-2xl px-2 py-8 md:px-0">
         <div className="grid gap-6">{children}</div>
       </div>
     </div>
   )
 }
-

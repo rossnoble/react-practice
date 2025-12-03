@@ -154,7 +154,10 @@ function Cell({
     >
       <div>
         {isRobot ? (
-          <div style={{ transform: `rotate(${rotation}deg)` }}>
+          <div
+            style={{ transform: `rotate(${rotation}deg)` }}
+            className="transition-all duration-300"
+          >
             <span className="">{ROBOT}</span>
           </div>
         ) : (
