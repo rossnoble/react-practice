@@ -1,5 +1,5 @@
 import { SearchHighlights } from '../challenges/search-highlights'
-import { ComponentCard } from '../components/shared/component-card.jsx'
+import { ComponentCard } from '../components/component-card'
 
 export function SearchHighlightsPage() {
   return (

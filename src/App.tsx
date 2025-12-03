@@ -5,8 +5,18 @@ import { ClickCounterPage } from './pages/click-counter'
 import { DatePickerPage } from './pages/date-picker'
 import { VirtualListPage } from './pages/virtual-list'
 import { SearchHighlightsPage } from './pages/search-highlights'
+import { ToastNotificationsPage } from './pages/toast-notifications'
 import { SandpackPage } from './pages/sandpack'
 import { PreviewLayout } from './layouts/PreviewLayout'
+import { challenges, type Challenge } from './challenges'
+
+const pageComponents: Record<Challenge['id'], React.ComponentType> = {
+  'click-counter': ClickCounterPage,
+  'date-picker': DatePickerPage,
+  'virtual-list': VirtualListPage,
+  'search-highlights': SearchHighlightsPage,
+  'toast-notifications': ToastNotificationsPage,
+}
 
 function App() {
   const [isDark, setIsDark] = useState(
@@ -21,13 +31,13 @@ function App() {
   return (
     <PreviewLayout onToggleDark={toggleDark} isDark={isDark}>
       <Route path="/" component={HomePage} />
-      <Route path="/challenges/click-counter" component={ClickCounterPage} />
-      <Route path="/challenges/date-picker" component={DatePickerPage} />
-      <Route path="/challenges/virtual-list" component={VirtualListPage} />
-      <Route
-        path="/challenges/search-highlights"
-        component={SearchHighlightsPage}
-      />
+      {challenges.map(challenge => (
+        <Route
+          key={challenge.id}
+          path={`/challenges/${challenge.id}`}
+          component={pageComponents[challenge.id]}
+        />
+      ))}
       <Route path="/sandbox" component={SandpackPage} />
     </PreviewLayout>
   )

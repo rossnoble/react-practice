@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { VirtualList } from '../challenges/virtual-list'
-import { ComponentCard } from '../components/shared/component-card'
+import { ComponentCard } from '../components/component-card'
 
 type TodoItem = {
   id: number

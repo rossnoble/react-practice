@@ -1,5 +1,5 @@
 import { DatePicker } from '../challenges/date-picker'
-import { ComponentCard } from '../components/shared/component-card'
+import { ComponentCard } from '../components/component-card'
 
 export function DatePickerPage() {
   return (

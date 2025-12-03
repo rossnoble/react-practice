@@ -1,6 +1,11 @@
 import { useState } from 'react'
 
-export function ClickCounter({ minCount = 0, maxCount = 10 }) {
+type ClickCounterProps = {
+  minCount?: number
+  maxCount?: number
+}
+
+export function ClickCounter({ minCount = 0, maxCount = 10 }: ClickCounterProps) {
   const [clickCount, setClickCount] = useState(0)
 
   const handleIncrement = () => {

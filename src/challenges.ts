@@ -32,4 +32,10 @@ export const challenges: Challenge[] = [
     description: 'Search as you type with result highlighting',
     status: 'completed',
   },
+  {
+    id: 'toast-notifications',
+    title: 'Toast notifications',
+    description: 'Toast notification system with Context API',
+    status: 'not-started',
+  },
 ]

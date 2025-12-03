@@ -1,7 +1,7 @@
 import { Link } from 'wouter'
 
 import { challenges } from '../challenges'
-import { ChallengeListCard } from '../components/shared/challenge-list-card'
+import { ChallengeListCard } from '../components/challenge-list-card'
 
 export function HomePage() {
   return (
