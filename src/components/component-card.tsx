@@ -10,7 +10,7 @@ type ComponentCardProps = {
 export function ComponentCard({
   title = '',
   description = '',
-  cardContainer = true,
+  cardContainer = false,
   children,
 }: ComponentCardProps) {
   return (

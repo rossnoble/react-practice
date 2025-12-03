@@ -10,9 +10,9 @@ Build a single-screen application that simulates a Roomba vacuum cleaner moving 
 ## Requirements
 
 ### Grid System
-- [ ] 10x10 grid (100 cells total)
-- [ ] Coordinates: (0,0) at top-left, (9,9) at bottom-right
-- [ ] Visual grid with clear cell boundaries
+- [x] 10x10 grid (100 cells total)
+- [x] Coordinates: (0,0) at top-left, (9,9) at bottom-right
+- [x] Visual grid with clear cell boundaries
 
 ### Roomba
 - [ ] Visual indicator showing Roomba's current position
