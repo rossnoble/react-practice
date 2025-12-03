@@ -1,4 +1,10 @@
-import { useState, useRef } from 'react'
+import {
+  useState,
+  useRef,
+  createContext,
+  useContext,
+  PropsWithChildren,
+} from 'react'
 
 type Variant = 'info' | 'success' | 'error' | 'warning'
 
@@ -6,11 +12,10 @@ type Position = 'top-left' | 'top-right'
 
 type Toast = {
   id: number
-  message: string
+  message?: string
   position?: Position
   variant?: Variant
   duration?: number
-  // isOpen?: boolean
   onClose?: () => void
 }
 
@@ -54,13 +59,31 @@ export function Toast({ toast }: { toast: Toast }) {
   )
 }
 
+type ToastContext = {
+  toasts: Toast[]
+  showToast: (toast: Partial<Toast>) => void
+  removeToast: (id: number) => void
+}
+
+const ToastContext = createContext<ToastContext | undefined>(undefined)
+
 const useToast = () => {
+  const context = useContext(ToastContext)
+
+  if (!context) {
+    throw new Error('useToast must be used within ToastProvider')
+  }
+
+  return context
+}
+
+const ToastProvider = ({ children }: PropsWithChildren) => {
   const [toasts, setToasts] = useState<Toast[]>([])
   const toastIdRef = useRef(0)
 
-  const showToast = (toast: Omit<Toast, 'id'>) => {
+  const showToast = (toast: Partial<Toast>) => {
     const id = ++toastIdRef.current
-    const newToast = {
+    const newToast: Toast = {
       id,
       ...toast,
       onClose: () => removeToast(id),
@@ -80,39 +103,60 @@ const useToast = () => {
     setToasts(prev => prev.filter(t => toastId !== t.id))
   }
 
-  return {
+  const contextValue = {
     toasts,
     showToast,
+    removeToast,
   }
+
+  return (
+    <ToastContext value={contextValue}>
+      {children}
+      <div data-id="toast-container">
+        {toasts.map(toast => (
+          <Toast key={toast.id} toast={toast} />
+        ))}
+      </div>
+    </ToastContext>
+  )
+}
+
+function ToastControls() {
+  const { showToast } = useToast()
+
+  return (
+    <div className="flex-cols flex gap-2">
+      <button
+        onClick={() =>
+          showToast({
+            message: 'This message will disappear',
+            duration: 3000,
+            position: 'top-left',
+          })
+        }
+        className="button"
+      >
+        Trigger toast 1
+      </button>
+      <button
+        onClick={() =>
+          showToast({
+            variant: 'warning',
+            message: 'This message will persist',
+          })
+        }
+        className="button"
+      >
+        Trigger toast 2
+      </button>
+    </div>
+  )
 }
 
 export function ToastNotifications() {
-  const { showToast, toasts } = useToast()
-  console.log({ toasts })
-
   return (
-    <div>
-      {toasts.map(toast => (
-        <Toast key={toast.id} toast={toast} />
-      ))}
-      <div className="flex-cols flex gap-2">
-        <button
-          onClick={() =>
-            showToast({ message: 'This is a message 1', duration: 1000 })
-          }
-          className="button"
-        >
-          Trigger toast 1
-        </button>
-        <button
-          onClick={() =>
-            showToast({ variant: 'warning', message: 'This is a message 2' })
-          }
-          className="button"
-        >
-          Trigger toast 2
-        </button>
-      </div>
-    </div>
+    <ToastProvider>
+      <ToastControls />
+    </ToastProvider>
   )
 }
