@@ -1,25 +1,21 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 
 type Variant = 'info' | 'success' | 'error' | 'warning'
 
 type Position = 'top-left' | 'top-right'
 
-type ToastProps = {
+type Toast = {
+  id: number
   message: string
   position?: Position
   variant?: Variant
-  isOpen: boolean
-  onClose: () => void
+  duration?: number
+  // isOpen?: boolean
+  onClose?: () => void
 }
 
-export function Toast(props: ToastProps) {
-  const {
-    isOpen = false,
-    message,
-    position = 'top-right',
-    variant = 'info',
-    onClose,
-  } = props
+export function Toast({ toast }: { toast: Toast }) {
+  const { message, position = 'top-right', variant = 'info', onClose } = toast
 
   const getPositionStyles = (position: Position) => {
     const styles: Record<Position, string> = {
@@ -41,10 +37,10 @@ export function Toast(props: ToastProps) {
     return styles[variant] ?? ''
   }
 
-  if (!isOpen) return null
-
   return (
     <div
+      data-id={toast.id}
+      style={{ zIndex: 1000 + toast.id }}
       className={`${getPositionStyles(position)} ${getVariantStyles(variant)} fixed flex min-w-[300px] items-center justify-between rounded-md border px-6 py-4 shadow-md`}
     >
       <p>{message}</p>
@@ -59,67 +55,64 @@ export function Toast(props: ToastProps) {
 }
 
 const useToast = () => {
-  const [showToast, setShowToast] = useState(false)
-  const [variant, setVariant] = useState<Variant>('info')
-  const [message, setMessage] = useState('')
+  const [toasts, setToasts] = useState<Toast[]>([])
+  const toastIdRef = useRef(0)
 
-  const onClose = () => setShowToast(false)
-
-  const timeoutRef = useRef(0)
-
-  useEffect(() => {
-    if (!showToast) return
-
-    timeoutRef.current = setTimeout(() => {
-      setShowToast(false)
-    }, 2000)
-
-    return () => {
-      timeoutRef.current = 0
+  const showToast = (toast: Omit<Toast, 'id'>) => {
+    const id = ++toastIdRef.current
+    const newToast = {
+      id,
+      ...toast,
+      onClose: () => removeToast(id),
     }
-  }, [showToast])
+
+    setToasts(prev => [newToast, ...prev])
+
+    // Close toast if a duration is passed
+    if (toast.duration) {
+      setTimeout(() => {
+        removeToast(id)
+      }, toast.duration)
+    }
+  }
+
+  const removeToast = (toastId: number) => {
+    setToasts(prev => prev.filter(t => toastId !== t.id))
+  }
 
   return {
-    toast: (
-      <Toast
-        message={message}
-        variant={variant}
-        isOpen={showToast}
-        onClose={() => setShowToast(false)}
-      />
-    ),
-    showToast: ({
-      message,
-      variant,
-    }: Partial<Pick<ToastProps, 'message' | 'variant'>>) => {
-      if (message) setMessage(message)
-      if (variant) setVariant(variant)
-      setShowToast(true)
-    },
-    onClose,
+    toasts,
+    showToast,
   }
 }
 
 export function ToastNotifications() {
-  const { showToast, toast } = useToast()
+  const { showToast, toasts } = useToast()
+  console.log({ toasts })
 
   return (
     <div>
-      {toast}
-      <button
-        onClick={() => showToast({ message: 'This is a message 1' })}
-        className="button"
-      >
-        Trigger toast 1
-      </button>
-      <button
-        onClick={() =>
-          showToast({ variant: 'warning', message: 'This is a message 2' })
-        }
-        className="button"
-      >
-        Trigger toast 2
-      </button>
+      {toasts.map(toast => (
+        <Toast key={toast.id} toast={toast} />
+      ))}
+      <div className="flex-cols flex gap-2">
+        <button
+          onClick={() =>
+            showToast({ message: 'This is a message 1', duration: 1000 })
+          }
+          className="button"
+        >
+          Trigger toast 1
+        </button>
+        <button
+          onClick={() =>
+            showToast({ variant: 'warning', message: 'This is a message 2' })
+          }
+          className="button"
+        >
+          Trigger toast 2
+        </button>
+      </div>
     </div>
   )
 }
