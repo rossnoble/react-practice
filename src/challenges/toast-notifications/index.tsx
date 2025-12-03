@@ -1,6 +1,6 @@
-type Variant = 'info' | 'success' | 'error' | 'warning'
-
 import { useState, useRef, useEffect } from 'react'
+
+type Variant = 'info' | 'success' | 'error' | 'warning'
 
 type Position = 'top-left' | 'top-right'
 
@@ -20,8 +20,6 @@ export function Toast(props: ToastProps) {
     variant = 'info',
     onClose,
   } = props
-
-  const timeoutRef = useRef(0)
 
   const getPositionStyles = (position: Position) => {
     const styles: Record<Position, string> = {
@@ -43,25 +41,19 @@ export function Toast(props: ToastProps) {
     return styles[variant] ?? ''
   }
 
-  useEffect(() => {
-    if (!isOpen) return
-
-    timeoutRef.current = setTimeout(() => {
-      onClose?.()
-    }, 2000)
-
-    return () => {
-      timeoutRef.current = 0
-    }
-  }, [isOpen])
-
   if (!isOpen) return null
 
   return (
     <div
-      className={`${getPositionStyles(position)} ${getVariantStyles(variant)} fixed rounded-md border px-6 py-4 shadow-md`}
+      className={`${getPositionStyles(position)} ${getVariantStyles(variant)} fixed flex min-w-[300px] items-center justify-between rounded-md border px-6 py-4 shadow-md`}
     >
-      {message}
+      <p>{message}</p>
+      <button
+        onClick={onClose}
+        className="flex size-4 items-center justify-center rounded-sm border bg-gray-100 text-xs hover:bg-gray-300"
+      >
+        ✕
+      </button>
     </div>
   )
 }
@@ -72,6 +64,20 @@ const useToast = () => {
   const [message, setMessage] = useState('')
 
   const onClose = () => setShowToast(false)
+
+  const timeoutRef = useRef(0)
+
+  useEffect(() => {
+    if (!showToast) return
+
+    timeoutRef.current = setTimeout(() => {
+      setShowToast(false)
+    }, 2000)
+
+    return () => {
+      timeoutRef.current = 0
+    }
+  }, [showToast])
 
   return {
     toast: (
@@ -94,11 +100,12 @@ const useToast = () => {
   }
 }
 
-export function ToastContainer() {
-  const { toast, showToast } = useToast()
+export function ToastNotifications() {
+  const { showToast, toast } = useToast()
 
   return (
     <div>
+      {toast}
       <button
         onClick={() => showToast({ message: 'This is a message 1' })}
         className="button"
@@ -113,8 +120,6 @@ export function ToastContainer() {
       >
         Trigger toast 2
       </button>
-
-      {toast}
     </div>
   )
 }

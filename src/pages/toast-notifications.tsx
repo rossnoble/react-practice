@@ -1,4 +1,4 @@
-import { ToastContainer } from '../challenges/toast-notifications'
+import { ToastNotifications } from '../challenges/toast-notifications'
 import { ComponentCard } from '../components/component-card'
 
 export function ToastNotificationsPage() {
@@ -7,7 +7,7 @@ export function ToastNotificationsPage() {
       title="Toast notifications"
       description="Build a toast notification system from scratch"
     >
-      <ToastContainer />
+      <ToastNotifications />
     </ComponentCard>
   )
 }
