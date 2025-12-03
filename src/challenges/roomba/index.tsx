@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 
 type Coordinates = { x: number; y: number }
 type Grid = Coordinates[]
@@ -35,7 +35,7 @@ export function Roomba({
 
   const moveForward = () => {
     // FIXME: This could be stale. Should use setCoordinates(prev => )
-    const { x, y } = Object.assign({}, coordinates)
+    const { x, y } = coordinates
 
     // FIXME: This could be stale. Should use setCoordinates(prev => )
     const currDirection = direction
