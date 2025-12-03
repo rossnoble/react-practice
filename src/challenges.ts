@@ -38,4 +38,10 @@ export const challenges: Challenge[] = [
     description: 'Toast notification system with Context API',
     status: 'not-started',
   },
+  {
+    id: 'roomba',
+    title: 'Roomba',
+    description: 'Simulate a roomba vacuum cleaner moving around a grid',
+    status: 'not-started',
+  },
 ]
