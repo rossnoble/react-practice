@@ -25,7 +25,7 @@ Build a single-screen application that simulates a Roomba vacuum cleaner moving 
 
 ### Wall Collision Behavior
 When Roomba tries to move beyond grid edge:
-- [ ] Do NOT move off the grid
+- [x] Do NOT move off the grid
 - [ ] Automatically turn right instead
 - [ ] Stay in the same cell
 
