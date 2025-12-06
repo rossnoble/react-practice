@@ -7,6 +7,7 @@ import { VirtualListPage } from './pages/virtual-list'
 import { SearchHighlightsPage } from './pages/search-highlights'
 import { ToastNotificationsPage } from './pages/toast-notifications'
 import { RoombaPage } from './pages/roomba'
+import { DigitalClockPage } from './pages/digital-clock'
 import { SandpackPage } from './pages/sandpack'
 import { PreviewLayout } from './layouts/PreviewLayout'
 import { challenges, type Challenge } from './challenges'
@@ -18,6 +19,7 @@ const pageComponents: Record<Challenge['id'], React.ComponentType> = {
   'search-highlights': SearchHighlightsPage,
   'toast-notifications': ToastNotificationsPage,
   'roomba': RoombaPage,
+  'digital-clock': DigitalClockPage,
 }
 
 function App() {

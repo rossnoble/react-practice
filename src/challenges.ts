@@ -44,4 +44,10 @@ export const challenges: Challenge[] = [
     description: 'Simulate a roomba vacuum cleaner moving around a grid',
     status: 'in-progress',
   },
+  {
+    id: 'digital-clock',
+    title: 'Digital clock',
+    description: 'Real-time digital clock display',
+    status: 'in-progress',
+  },
 ]
