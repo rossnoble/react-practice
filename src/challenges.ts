@@ -36,7 +36,7 @@ export const challenges: Challenge[] = [
     id: 'toast-notifications',
     title: 'Toast notifications',
     description: 'Toast notification system with Context API',
-    status: 'not-started',
+    status: 'in-progress',
   },
   {
     id: 'roomba',
