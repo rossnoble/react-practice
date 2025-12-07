@@ -59,7 +59,7 @@ function SegmentClock({ hours, minutes, seconds }: ClockProps) {
   return (
     <time
       dateTime={timeString}
-      className="flex size-fit gap-1 rounded-md border-10 border-gray-500 bg-gray-950 p-4 shadow-sm/30"
+      className="flex size-fit gap-1 rounded-md border-10 border-gray-500 bg-gray-950 p-4"
     >
       {toIntArray(hours).map(n => (
         <Digit num={n} />
