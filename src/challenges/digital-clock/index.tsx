@@ -103,7 +103,7 @@ function getSegments(num: number): string[] {
 
 function Colon({
   size = 7,
-  color = 'bg-orange-500',
+  color = 'bg-sky-500',
 }: {
   size?: number
   color?: string
@@ -135,7 +135,7 @@ function Digit({
   size = 7,
   short = 1,
   long = 4,
-  color = 'bg-orange-500',
+  color = 'bg-sky-500',
 }: DigitProps) {
   const outlines: Cell[][] = [
     [

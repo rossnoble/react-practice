@@ -9,6 +9,7 @@ import { ToastNotificationsPage } from './pages/toast-notifications'
 import { RoombaPage } from './pages/roomba'
 import { DigitalClockPage } from './pages/digital-clock'
 import { AnalogClockPage } from './pages/analog-clock'
+import { TemperatureConverterPage } from './pages/temperature-converter'
 import { SandpackPage } from './pages/sandpack'
 import { PreviewLayout } from './layouts/PreviewLayout'
 import { challenges, type Challenge } from './challenges'
@@ -22,6 +23,7 @@ const pageComponents: Record<Challenge['id'], React.ComponentType> = {
   'roomba': RoombaPage,
   'digital-clock': DigitalClockPage,
   'analog-clock': AnalogClockPage,
+  'temperature-converter': TemperatureConverterPage,
 }
 
 function App() {

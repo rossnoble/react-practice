@@ -11,7 +11,7 @@ export const challenges: Challenge[] = [
   {
     id: 'click-counter',
     title: 'Click counter',
-    description: 'Simple counter with increment/decrement',
+    description: 'Simple counter with min and max values',
     status: 'completed',
   },
   {
@@ -55,5 +55,11 @@ export const challenges: Challenge[] = [
     title: 'Analog clock',
     description: 'Real-time analog clock display',
     status: 'completed',
+  },
+  {
+    id: 'temperature-converter',
+    title: 'Temperature converter',
+    description: 'Convert between Celsius and Fahrenheit',
+    status: 'not-started',
   },
 ]

@@ -12,7 +12,7 @@ export const PreviewLayout = ({
   isDark,
 }: PreviewLayoutProps) => {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="min-h-screen bg-white dark:bg-gray-950">
       <header className="relative border-b border-gray-300 bg-gray-200 px-2 py-4">
         <div className="mx-auto max-w-2xl">
           <button
@@ -22,13 +22,13 @@ export const PreviewLayout = ({
           >
             {isDark ? '☀️' : '🌙'}
           </button>
-          <Link href="/">
-            <div className="inline-block">
-              <h1 className="mb-2 text-2xl font-bold text-gray-900 transition-colors hover:text-blue-600 dark:text-gray-100 dark:hover:text-blue-400">
+          <div className="inline-block">
+            <h1 className="mb-2 text-2xl font-bold text-gray-900 transition-colors hover:text-blue-600 dark:text-gray-100 dark:hover:text-blue-400">
+              <Link href="/" className="text-gray-800! hover:text-gray-600!">
                 React Practice
-              </h1>
-            </div>
-          </Link>
+              </Link>
+            </h1>
+          </div>
           <p className="text-gray-600 dark:text-gray-400">
             Fun exercises for learning and interview and prep
           </p>

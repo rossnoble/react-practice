@@ -5,7 +5,10 @@ type ClickCounterProps = {
   maxCount?: number
 }
 
-export function ClickCounter({ minCount = 0, maxCount = 10 }: ClickCounterProps) {
+export function ClickCounter({
+  minCount = -5,
+  maxCount = 5,
+}: ClickCounterProps) {
   const [clickCount, setClickCount] = useState(0)
 
   const handleIncrement = () => {
@@ -22,24 +25,26 @@ export function ClickCounter({ minCount = 0, maxCount = 10 }: ClickCounterProps)
 
   return (
     <div>
-      <p className="text-4xl font-bold text-gray-700 mb-6">{clickCount}</p>
+      <p className="mb-6 text-4xl font-bold text-gray-700">{clickCount}</p>
 
-      <div className="flex flex-col md:flex-row gap-2">
+      <div className="flex flex-col gap-2 md:flex-row">
         <button
           onClick={handleIncrement}
-          className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded transition-colors"
+          className="rounded bg-green-500 px-4 py-2 font-medium text-white hover:bg-green-600 active:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-green-500"
+          disabled={clickCount === maxCount}
         >
           Increment (+)
         </button>
         <button
           onClick={handleDecrement}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded transition-colors"
+          className="rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-600 active:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-blue-500"
+          disabled={clickCount === minCount}
         >
           Decrement (-)
         </button>
         <button
           onClick={handleReset}
-          className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded transition-colors md:ml-auto"
+          className="rounded bg-gray-500 px-4 py-2 font-medium text-white transition-colors hover:bg-gray-600 md:ml-auto"
         >
           Reset count
         </button>
