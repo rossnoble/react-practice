@@ -21,8 +21,8 @@ const ORIENTATION = ['N', 'E', 'S', 'W'] // 0, 1, 2, 3
 type Mode = 'auto' | 'manual'
 
 type RoombaProps = {
-  initialMode: Mode
-  initialDirection: Direction
+  initialMode?: Mode
+  initialDirection?: Direction
 }
 
 export function Roomba({

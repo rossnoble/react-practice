@@ -9,12 +9,12 @@ type ChallengeListCardProps = {
 export function ChallengeListCard({ challenge }: ChallengeListCardProps) {
   const getStatusStyles = () => {
     if (challenge.status === 'completed') {
-      return 'bg-green-100 dark:bg-green-800 border-green-300'
+      return 'bg-green-50 dark:bg-green-900 border-green-300 dark:border-green-700 hover:border-green-400 hover:outline-green-400'
     } else if (challenge.status === 'in-progress') {
-      return 'bg-sky-100 dark:bg-sky-800 border-sky-300'
+      return 'bg-sky-50 dark:bg-sky-800 border-sky-300 dark:border-sky-700 dark:bg-sky-900 hover:border-sky-400 hover:outline-sky-400'
     }
 
-    return 'border-gray-200 bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+    return 'border-gray-300 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-500 hover:border-gray-400'
   }
 
   const getStatusIcon = () => {
@@ -30,13 +30,13 @@ export function ChallengeListCard({ challenge }: ChallengeListCardProps) {
 
   return (
     <div
-      className={`flex items-center justify-between rounded-lg border p-4 transition-colors ${getStatusStyles()}`}
+      className={`flex items-start justify-between rounded-lg border px-4 py-3 ${getStatusStyles()} h-full`}
     >
       <div>
-        <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+        <h3 className="mb-1 font-semibold text-gray-900 dark:text-gray-100">
           {challenge.title}
         </h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+        <p className="text-sm text-gray-700 dark:text-gray-300">
           {challenge.description}
         </p>
       </div>

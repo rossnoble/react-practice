@@ -1,5 +1,9 @@
 type Status = 'completed' | 'in-progress' | 'not-started'
 
+export type ChallengePageProps = {
+  challenge?: Challenge
+}
+
 export type Challenge = {
   id: string
   title: string
