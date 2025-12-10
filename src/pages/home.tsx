@@ -11,7 +11,6 @@ export function HomePage() {
           <h2 className="mb-2 text-xl font-semibold text-gray-800 dark:text-gray-200">
             Challenges
           </h2>
-          <p>List of challenges</p>
         </header>
 
         <div className="grid gap-3">
@@ -21,15 +20,6 @@ export function HomePage() {
             </Link>
           ))}
         </div>
-      </div>
-
-      <div>
-        <h2 className="mb-2 text-xl font-semibold">Sandbox</h2>
-        <p>
-          Experimental feature coming soon:{' '}
-          <Link href={`/sandbox`}>click here</Link> to test out the browser
-          editor
-        </p>
       </div>
     </div>
   )

@@ -48,6 +48,12 @@ export const challenges: Challenge[] = [
     id: 'digital-clock',
     title: 'Digital clock',
     description: 'Real-time digital clock display',
-    status: 'in-progress',
+    status: 'completed',
+  },
+  {
+    id: 'analog-clock',
+    title: 'Analog clock',
+    description: 'Real-time analog clock display',
+    status: 'completed',
   },
 ]
