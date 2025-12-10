@@ -1,30 +1,32 @@
 import { Route } from 'wouter'
 import { useState } from 'react'
+
 import { HomePage } from './pages/home'
-import { ClickCounter } from './challenges/click-counter'
-import { DatePickerPage } from './pages/date-picker'
-import { VirtualListPage } from './pages/virtual-list'
-import { SearchHighlights } from './challenges/search-highlights'
-import { ToastNotificationsPage } from './pages/toast-notifications'
-import { RoombaPage } from './pages/roomba'
-import { DigitalClockPage } from './pages/digital-clock'
-import { AnalogClockPage } from './pages/analog-clock'
-import { TemperatureConverterPage } from './pages/temperature-converter'
 import { SandpackPage } from './pages/sandpack'
 import { MainLayout } from './layouts/main-layout'
 import { challenges, type Challenge } from './challenges'
+
 import { ChallengeLayout } from './layouts/challenge-layout'
+import { ClickCounter } from './challenges/click-counter'
+import { DatePicker } from './challenges/date-picker'
+import { EntryPoint as VirtualList } from './challenges/virtual-list'
+import { SearchHighlights } from './challenges/search-highlights'
+import { ToastNotifications } from './challenges/toast-notifications'
+import { Roomba } from './challenges/roomba'
+import { DigitalClock } from './challenges/digital-clock'
+import { AnalogClock } from './challenges/analog-clock'
+import { TemperatureConverter } from './challenges/temperature-converter'
 
 const pageComponents: Record<Challenge['id'], React.ComponentType> = {
   'click-counter': ClickCounter,
-  'date-picker': DatePickerPage,
-  'virtual-list': VirtualListPage,
+  'date-picker': DatePicker,
+  'virtual-list': VirtualList,
   'search-highlights': SearchHighlights,
-  'toast-notifications': ToastNotificationsPage,
-  roomba: RoombaPage,
-  'digital-clock': DigitalClockPage,
-  'analog-clock': AnalogClockPage,
-  'temperature-converter': TemperatureConverterPage,
+  'toast-notifications': ToastNotifications,
+  roomba: Roomba,
+  'digital-clock': DigitalClock,
+  'analog-clock': AnalogClock,
+  'temperature-converter': TemperatureConverter,
 }
 
 function App() {

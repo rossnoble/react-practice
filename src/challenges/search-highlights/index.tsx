@@ -102,7 +102,7 @@ export function SearchHighlights() {
       ) : !error ? (
         <div>
           {!query ? (
-            <p>Start typing to search...</p>
+            <p>Start typing to search... </p>
           ) : (
             <h2 className="mb-4 text-lg font-bold">{getResultTitle()}</h2>
           )}

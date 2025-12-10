@@ -1,83 +1,75 @@
-import { ReactNode, useEffect, useState } from 'react'
+import React from 'react'
 
-type VirtualListProps<T> = {
-  items: T[]
-  itemHeight?: number
-  containerHeight?: number
-  renderItem: (item: T) => ReactNode
+import { VirtualList } from './virtual-list'
+
+type TodoItem = {
+  id: number
+  title: string
+  description: string
+  timestamp: string
 }
 
-export function VirtualList<T>({
-  items,
-  itemHeight = 64,
-  containerHeight = 300,
-  renderItem,
-}: VirtualListProps<T>) {
-  const [scrollTop, setScrollTop] = useState(0)
+export const generateItems = (count: number): TodoItem[] => {
+  return Array.from({ length: count }, (_, i) => ({
+    id: i + 1,
+    title: `Item ${i + 1}`,
+    description: `Description for item ${i + 1}`,
+    timestamp: new Date(Date.now() - Math.random() * 10000000000).toISOString(),
+  }))
+}
 
-  const getIndex = (item: unknown, index: number) => {
-    return isItemWithId(item) ? item.id : `${visibleStartIndex}-${index}`
+export function EntryPoint() {
+  const [items, setItems] = React.useState(generateItems(10_000))
+
+  const [containerHeight, setContainerHeight] = React.useState(600)
+  const handleContainerHeightChange = (
+    ev: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newValue = parseInt(ev.target.value)
+    setContainerHeight(newValue || 0)
   }
 
-  const handleScroll = (ev: React.UIEvent<HTMLDivElement>) => {
-    // Scroll event on the parent container
-    setScrollTop(ev.currentTarget.scrollTop)
+  const handleDeleteClick = (itemId: TodoItem['id']) => {
+    const filtered = items.filter(item => item.id !== itemId)
+    setItems(filtered)
   }
-
-  // Number of items to hide from the head to the start of the viewport
-  const visibleStartIndex = Math.floor(scrollTop / itemHeight)
-
-  // Number of items inside the height of the viewport
-  const visibleEndIndex = Math.ceil((scrollTop + containerHeight) / itemHeight)
-
-  useEffect(() => {
-    const sliceMsg = `Show slice: [${visibleStartIndex}, ${visibleEndIndex}]`
-    const countMsg = `Item count: ${visibleEndIndex - visibleStartIndex}`
-
-    console.log(sliceMsg, countMsg)
-  }, [visibleStartIndex, visibleEndIndex])
-
-  const visibleItems = items.slice(visibleStartIndex, visibleEndIndex)
-
-  // Match the height of the elements from the start until the viewport
-  const paddingTop = visibleStartIndex * itemHeight
-
-  // Match the height of the elements from the end of the viewport to the bottom
-  const paddingBottom = (items.length - visibleEndIndex) * itemHeight
 
   return (
-    <div
-      className={`relative flex flex-col overflow-x-auto overflow-y-auto rounded-md border-1 border-gray-600 p-1 outline outline-3 outline-transparent transition-all duration-300 hover:border-sky-600 hover:outline-sky-200 dark:hover:border-sky-900 dark:hover:outline-sky-900`}
-      style={{ height: `${containerHeight}px` }}
-      onScroll={handleScroll}
-    >
-      <div>
-        <div style={{ height: `${paddingTop}px` }} />
+    <>
+      <label htmlFor="container-height">Container height:</label>
+      <input
+        id="container-height"
+        type="number"
+        value={containerHeight}
+        onChange={handleContainerHeightChange}
+        step={25}
+        min={100}
+        max={1000}
+        className="mb-4 border border-gray-300 p-1"
+      />
 
-        {visibleItems.map((item, index) => (
-          <div
-            key={getIndex(item, index)}
-            data-item-key={getIndex(item, index)}
-            style={{
-              height: `${itemHeight}px`,
-              top: (visibleStartIndex + index) * itemHeight,
-            }}
-            className="absolute right-0 left-0"
-          >
-            {renderItem(item)}
+      <VirtualList
+        items={items}
+        containerHeight={containerHeight}
+        itemHeight={65}
+        renderItem={(item: TodoItem) => (
+          <div className="group flex w-full justify-between border-b border-gray-300 px-3 py-2 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-700">
+            <div>
+              <h3 className="font-semibold">{item.title}</h3>
+              <p>{item.description}</p>
+            </div>
+
+            <div className="m-1 flex flex-col justify-start">
+              <button
+                onClick={() => handleDeleteClick(item.id)}
+                className="hidden size-5 rounded-sm bg-red-300 text-xs text-white group-hover:block hover:bg-red-400 active:bg-red-700"
+              >
+                &#10005;
+              </button>
+            </div>
           </div>
-        ))}
-
-        <div style={{ height: `${paddingBottom}px` }} />
-      </div>
-    </div>
+        )}
+      />
+    </>
   )
-}
-
-type ItemWithId = {
-  id: string | number
-}
-
-function isItemWithId(item: unknown): item is ItemWithId {
-  return (item as ItemWithId).id !== 'undefined'
 }
