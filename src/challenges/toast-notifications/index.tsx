@@ -6,10 +6,6 @@ import {
   PropsWithChildren,
 } from 'react'
 
-type Variant = 'info' | 'success' | 'error' | 'warning'
-
-type Position = 'top-left' | 'top-right'
-
 type Toast = {
   id: number
   message?: string
@@ -19,21 +15,40 @@ type Toast = {
   onClose?: () => void
 }
 
+const VARIANTS = ['info', 'success', 'error', 'warning']
+type Variant = (typeof VARIANTS)[number]
+
+const POSITIONS = [
+  'top-left',
+  'top-right',
+  'bottom-left',
+  'bottom-right',
+] as const
+type Position = (typeof POSITIONS)[number]
+
 export function Toast({ toast }: { toast: Toast }) {
-  const { message, position = 'top-right', variant = 'info', onClose } = toast
+  const {
+    message,
+    position = 'top-right',
+    variant = 'info',
+    duration,
+    onClose,
+  } = toast
 
   const getPositionStyles = (position: Position) => {
     const styles: Record<Position, string> = {
       'top-left': 'top-4 left-4',
       'top-right': 'top-4 right-4',
+      'bottom-right': 'bottom-4 right-4',
+      'bottom-left': 'bottom-4 left-4',
     }
 
     return styles[position] ?? ''
   }
 
-  const getVariantStyles = (variant: Variant) => {
+  const getContainerStyles = (variant: Variant) => {
     const styles: Record<Variant, string> = {
-      info: 'border-blue-400 bg-blue-100 ',
+      info: 'border-blue-400 bg-blue-100',
       success: 'border-green-400 bg-green-100',
       error: 'border-red-400 bg-red-100',
       warning: 'border-orange-400 bg-orange-100',
@@ -42,19 +57,44 @@ export function Toast({ toast }: { toast: Toast }) {
     return styles[variant] ?? ''
   }
 
+  const getButtonStyles = (variant: Variant) => {
+    const baseStyles = getContainerStyles(variant)
+
+    const buttonStyles: Record<Variant, string> = {
+      info: 'text-blue-400 hover:bg-blue-200',
+      success: 'text-green-400 hover:bg-green-200',
+      error: 'text-red-400 hover:bg-red-200',
+      warning: 'text-orange-400 bg-orange-100 hover:bg-orange-200',
+    }
+
+    const buttonColor = buttonStyles[variant] ?? ''
+
+    return [baseStyles, buttonColor].join(' ').trim()
+  }
+
   return (
     <div
       data-id={toast.id}
       style={{ zIndex: 1000 + toast.id }}
-      className={`${getPositionStyles(position)} ${getVariantStyles(variant)} fixed flex min-w-[300px] items-center justify-between rounded-md border px-6 py-4 shadow-md`}
+      className={`${getPositionStyles(position)} ${getContainerStyles(variant)} fixed flex min-w-[300px] justify-between gap-4 rounded-md border px-3 py-3 shadow-md`}
     >
-      <p>{message}</p>
-      <button
-        onClick={onClose}
-        className="flex size-4 items-center justify-center rounded-sm border bg-gray-100 text-xs hover:bg-gray-300"
-      >
-        ✕
-      </button>
+      <div className="px-3 py-1">
+        <p>{message}</p>
+        <p className="text-xs text-gray-700">
+          {duration
+            ? `This message will disappear in ${duration / 1000} seconds`
+            : 'This message will not disappear unless closed'}
+        </p>
+      </div>
+
+      <div>
+        <button
+          onClick={onClose}
+          className={`flex size-4 items-center justify-center rounded-sm border text-xs ${getButtonStyles(variant)}`}
+        >
+          ✕
+        </button>
+      </div>
     </div>
   )
 }
@@ -121,34 +161,73 @@ const ToastProvider = ({ children }: PropsWithChildren) => {
   )
 }
 
+// [0, ...1000-5000]
+const durationOptions = Array.from({ length: 6 }).map((_, idx) => idx * 1000)
+
 function ToastControls() {
-  const { showToast } = useToast()
+  const { showToast, toasts } = useToast()
+  const [variant, setVariant] = useState<Variant>('error')
+  const [position, setPosition] = useState<Position>('top-right')
+  const [duration, setDuration] = useState(4000)
 
   return (
-    <div className="flex-cols flex gap-2">
-      <button
-        onClick={() =>
-          showToast({
-            message: 'This message will disappear',
-            duration: 3000,
-            position: 'top-left',
-          })
-        }
-        className="button"
-      >
-        Trigger toast 1
-      </button>
-      <button
-        onClick={() =>
-          showToast({
-            variant: 'warning',
-            message: 'This message will persist',
-          })
-        }
-        className="button"
-      >
-        Trigger toast 2
-      </button>
+    <div>
+      <p className="mb-8">There are {toasts.length} toasts active.</p>
+
+      <div className="flex justify-between rounded-md border border-gray-300 bg-gray-100 p-4 shadow-sm">
+        <div className="flex-cols flex gap-2">
+          <select
+            id="variant"
+            className="border border-gray-300 bg-gray-50 p-2"
+            value={variant}
+            onChange={ev => setVariant(ev.target.value as Variant)}
+          >
+            {VARIANTS.map(variant => (
+              <option key={variant} value={variant}>
+                {variant}
+              </option>
+            ))}
+          </select>
+
+          <select
+            id="position"
+            className="border border-gray-300 bg-gray-50 p-2"
+            value={position}
+            onChange={ev => setPosition(ev.target.value as Position)}
+          >
+            {POSITIONS.map(position => (
+              <option value={position}>{position}</option>
+            ))}
+          </select>
+
+          <select
+            id="position"
+            className="border border-gray-300 bg-gray-50 p-2"
+            value={duration}
+            onChange={ev => setDuration(parseInt(ev.target.value))}
+          >
+            {durationOptions.map(dur => (
+              <option key={`duration-${dur}`} value={dur}>
+                {dur}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <button
+          onClick={() =>
+            showToast({
+              message: `Unix time: ${new Date().getTime()}`,
+              duration,
+              position,
+              variant,
+            })
+          }
+          className="button"
+        >
+          Trigger toast
+        </button>
+      </div>
     </div>
   )
 }
