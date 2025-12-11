@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-const DEGREES_PER_HOUR = 30 // = 360 / 12
-const DEGREES_PER_MINUTE = 6 // = 360 / 60
+const DEGREES_PER_HOUR = 30 // 360 / 12
+const DEGREES_PER_MINUTE = 6 // 360 / 60
 const DEGREES_PER_SECOND = 6 // 360 / 60
 
 type Props = {
@@ -24,31 +24,29 @@ export function AnalogClock({ size = 250, tick = 100 }: Props) {
 
   const hours = date.getHours() % 12
   const minutes = date.getMinutes()
-  // Get fractional seconds
+  // Get fractional seconds to create smooth sweep
   const seconds = date.getSeconds() + date.getMilliseconds() / 1000
 
   const hourHandRotation = hours * DEGREES_PER_HOUR
   const minuteHandRotation = minutes * DEGREES_PER_MINUTE
   const secondHandRotation = seconds * DEGREES_PER_SECOND
 
-  // TODO: Calculate how much to rotate each hand in degrees
   return (
-    <div className="w-fit rounded-full border-10 border-gray-300 shadow-sm/40">
+    <div className="w-fit rounded-full border-12 border-gray-400 shadow-sm/40 dark:border-gray-700">
       <div
         className="relative flex items-center justify-center rounded-full bg-black"
         style={{ width: `${size}px`, height: `${size}px` }}
       >
-        {/* markers */}
-        <p className="absolute top-2 w-full text-center text-xl text-white">
+        <p className="absolute top-2 w-full text-center text-2xl text-white">
           12
         </p>
-        <p className="absolute right-3 flex h-full items-center text-xl text-white">
+        <p className="absolute right-3 flex h-full items-center text-2xl text-white">
           3
         </p>
-        <p className="absolute bottom-2 w-full text-center text-xl text-white">
+        <p className="absolute bottom-2 w-full text-center text-2xl text-white">
           6
         </p>
-        <p className="absolute left-3 flex h-full items-center text-xl text-white">
+        <p className="absolute left-3 flex h-full items-center text-2xl text-white">
           9
         </p>
 
@@ -58,7 +56,7 @@ export function AnalogClock({ size = 250, tick = 100 }: Props) {
           style={{ transform: `rotate(${hourHandRotation}deg)` }}
         >
           <div
-            className="absolute top-[20%] z-20 h-[30%] w-[6px] bg-yellow-500"
+            className="absolute top-[20%] z-20 h-[35%] w-[6px] bg-yellow-500"
             style={{ left: `calc((${size}px - 6px) / 2)` }}
           />
         </div>
@@ -70,7 +68,7 @@ export function AnalogClock({ size = 250, tick = 100 }: Props) {
           style={{ transform: `rotate(${minuteHandRotation}deg)` }}
         >
           <div
-            className="absolute top-[7%] h-[43%] w-[3px] bg-red-500"
+            className="absolute top-[7%] h-[48%] w-[3px] bg-red-500"
             style={{ left: `calc((${size}px - 3px) / 2 )` }}
           />
         </div>
