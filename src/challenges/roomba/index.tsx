@@ -1,12 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 type Coordinates = { x: number; y: number }
 type Grid = Coordinates[]
 type Direction = 'N' | 'E' | 'S' | 'W'
 
 const ROBOT = '🤖'
-const ROWS = 6
-const COLUMNS = 9
+const ROWS = 10
+const COLUMNS = 10
 
 const grid = createGrid({ columns: COLUMNS, rows: ROWS })
 
@@ -36,18 +36,15 @@ export function Roomba({
   const moveForward = () => {
     // FIXME: This could be stale. Should use setCoordinates(prev => )
     const { x, y } = coordinates
-
-    // FIXME: This could be stale. Should use setCoordinates(prev => )
-    const currDirection = direction
     let next = { ...coordinates }
 
-    if (currDirection === 'N') {
+    if (direction === 'N') {
       next.y = y - 1
-    } else if (currDirection === 'S') {
+    } else if (direction === 'S') {
       next.y = y + 1
-    } else if (currDirection === 'E') {
+    } else if (direction === 'E') {
       next.x = x + 1
-    } else if (currDirection === 'W') {
+    } else if (direction === 'W') {
       next.x = x - 1
     }
 
@@ -60,6 +57,18 @@ export function Roomba({
     setCoordinates(next)
   }
 
+  useEffect(() => {
+    if (mode === 'manual') return
+
+    const intervalId = setInterval(() => {
+      moveForward()
+    }, 1000)
+
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [mode, coordinates, direction])
+
   const turnRight = () => {
     const nextDirection = getNextDirection(direction)
     setDirection(nextDirection)
@@ -68,6 +77,7 @@ export function Roomba({
   const handleResetClick = () => {
     setCoordinates(initialCoords)
     setDirection(initialDirection)
+    setMode(initialMode)
   }
 
   const toggleMode = () => {
@@ -99,27 +109,28 @@ export function Roomba({
 
       <div className="mt-8 flex items-center gap-4">
         <button
-          className="active:gray-200 border border-gray-300 bg-gray-100 px-3 py-2 text-sm active:bg-gray-200 active:text-gray-500 disabled:text-gray-400"
-          onClick={() => moveForward()}
+          className="active:gray-200 border border-gray-300 bg-gray-100 px-3 py-2 text-sm active:bg-gray-200 active:text-gray-500 disabled:text-gray-400 dark:border-gray-700 dark:bg-gray-800"
+          onClick={() => moveForward(coordinates)}
           disabled={mode === 'auto'}
         >
           Forward &uarr;
         </button>
         <button
-          className="active:gray-200 border border-gray-300 bg-gray-100 px-3 py-2 text-sm active:bg-gray-200 active:text-gray-500"
+          className="active:gray-200 border border-gray-300 bg-gray-100 px-3 py-2 text-sm active:bg-gray-200 active:text-gray-500 disabled:text-gray-400 dark:border-gray-700 dark:bg-gray-800"
           onClick={() => turnRight()}
+          disabled={mode === 'auto'}
         >
           Turn right &rarr;
         </button>
 
         <button
-          className="active:gray-200 border border-gray-300 bg-gray-100 px-3 py-2 text-sm active:bg-gray-200 active:text-gray-500"
+          className="active:gray-200 border border-gray-300 bg-gray-100 px-3 py-2 text-sm active:bg-gray-200 active:text-gray-500 disabled:text-gray-400 dark:border-gray-700 dark:bg-gray-800"
           onClick={handleResetClick}
         >
           Reset
         </button>
         <button
-          className="active:gray-200 border border-gray-300 bg-gray-100 px-3 py-2 text-sm active:bg-gray-200 active:text-gray-500"
+          className="active:gray-200 border border-gray-300 bg-gray-100 px-3 py-2 text-sm active:bg-gray-200 active:text-gray-500 disabled:text-gray-400 dark:border-gray-700 dark:bg-gray-800"
           onClick={toggleMode}
         >
           {mode?.toUpperCase()}
@@ -141,14 +152,14 @@ function Cell({
 }) {
   const { x, y } = coordinates
   const activeClass = isRobot
-    ? 'bg-orange-100 border-orange-200 border-2'
-    : 'bg-gray-100 border-gray-200'
+    ? 'bg-orange-100 dark:bg-orange-800 border-orange-200 dark:border-orange-700 border-2'
+    : 'bg-gray-100 border-gray-200 dark:border-gray-700 dark:bg-gray-800 '
 
   const rotation = getRotation(direction)
 
   return (
     <div
-      className={`flex size-12 items-center justify-center text-sm text-gray-300 ${activeClass}`}
+      className={`flex size-12 items-center justify-center text-sm text-gray-300 dark:text-gray-700 ${activeClass}`}
       data-x={x}
       data-y={y}
     >
