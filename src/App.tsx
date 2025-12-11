@@ -16,6 +16,7 @@ import { Roomba } from './challenges/roomba'
 import { DigitalClock } from './challenges/digital-clock'
 import { AnalogClock } from './challenges/analog-clock'
 import { TemperatureConverter } from './challenges/temperature-converter'
+import { Modal } from './challenges/modal'
 
 const pageComponents: Record<Challenge['id'], React.ComponentType> = {
   'click-counter': ClickCounter,
@@ -27,6 +28,7 @@ const pageComponents: Record<Challenge['id'], React.ComponentType> = {
   'digital-clock': DigitalClock,
   'analog-clock': AnalogClock,
   'temperature-converter': TemperatureConverter,
+  modal: Modal,
 }
 
 function App() {

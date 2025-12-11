@@ -66,4 +66,10 @@ export const challenges: Challenge[] = [
     description: 'Convert between Celsius and Fahrenheit',
     status: 'completed',
   },
+  {
+    id: 'modal',
+    title: 'Modal',
+    description: 'Accessible modal with keyboard support',
+    status: 'not-started',
+  },
 ]
