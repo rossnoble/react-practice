@@ -72,4 +72,10 @@ export const challenges: Challenge[] = [
     description: 'Accessible modal with keyboard support',
     status: 'not-started',
   },
+  {
+    id: 'sortable-list',
+    title: 'Sortable list',
+    description: 'Drag-and-drop sortable list',
+    status: 'not-started',
+  },
 ]

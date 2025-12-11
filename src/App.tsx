@@ -17,6 +17,7 @@ import { DigitalClock } from './challenges/digital-clock'
 import { AnalogClock } from './challenges/analog-clock'
 import { TemperatureConverter } from './challenges/temperature-converter'
 import { Modal } from './challenges/modal'
+import { SortableList } from './challenges/sortable-list'
 
 const pageComponents: Record<Challenge['id'], React.ComponentType> = {
   'click-counter': ClickCounter,
@@ -29,6 +30,7 @@ const pageComponents: Record<Challenge['id'], React.ComponentType> = {
   'analog-clock': AnalogClock,
   'temperature-converter': TemperatureConverter,
   modal: Modal,
+  'sortable-list': SortableList,
 }
 
 function App() {
