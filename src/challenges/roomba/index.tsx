@@ -34,7 +34,6 @@ export function Roomba({
   const [coordinates, setCoordinates] = useState<Coordinates>(initialCoords)
 
   const moveForward = () => {
-    // FIXME: This could be stale. Should use setCoordinates(prev => )
     const { x, y } = coordinates
     let next = { ...coordinates }
 
@@ -62,7 +61,7 @@ export function Roomba({
 
     const intervalId = setInterval(() => {
       moveForward()
-    }, 1000)
+    }, 800)
 
     return () => {
       clearInterval(intervalId)
@@ -92,7 +91,7 @@ export function Roomba({
   return (
     <div>
       <div
-        className="grid w-fit gap-1"
+        className="grid w-fit gap-0.5"
         style={{
           gridTemplateColumns: `repeat(${COLUMNS}, 1fr)`,
         }}
@@ -110,7 +109,7 @@ export function Roomba({
       <div className="mt-8 flex items-center gap-4">
         <button
           className="active:gray-200 border border-gray-300 bg-gray-100 px-3 py-2 text-sm active:bg-gray-200 active:text-gray-500 disabled:text-gray-400 dark:border-gray-700 dark:bg-gray-800"
-          onClick={() => moveForward(coordinates)}
+          onClick={() => moveForward()}
           disabled={mode === 'auto'}
         >
           Forward &uarr;
@@ -151,15 +150,11 @@ function Cell({
   direction: Direction
 }) {
   const { x, y } = coordinates
-  const activeClass = isRobot
-    ? 'bg-orange-100 dark:bg-orange-800 border-orange-200 dark:border-orange-700 border-2'
-    : 'bg-gray-100 border-gray-200 dark:border-gray-700 dark:bg-gray-800 '
-
   const rotation = getRotation(direction)
 
   return (
     <div
-      className={`flex size-12 items-center justify-center text-sm text-gray-300 dark:text-gray-700 ${activeClass}`}
+      className={`flex size-12 items-center justify-center border-gray-200 bg-gray-100 text-sm text-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-700`}
       data-x={x}
       data-y={y}
     >
@@ -169,7 +164,9 @@ function Cell({
             style={{ transform: `rotate(${rotation}deg)` }}
             className="transition-all duration-300"
           >
-            <span className="">{ROBOT}</span>
+            <div className="flex size-9 items-center justify-center rounded-full border-2 border-blue-600 bg-blue-400 text-center">
+              {ROBOT}
+            </div>
           </div>
         ) : (
           <>
