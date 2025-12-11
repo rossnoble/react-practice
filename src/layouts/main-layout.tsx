@@ -12,7 +12,7 @@ export const MainLayout = ({ children, onToggleDark, isDark }: Props) => {
     <div className="min-h-screen bg-white dark:bg-gray-950">
       <Header onToggleDark={onToggleDark} isDark={isDark} />
 
-      <div className="mx-auto px-2 md:px-0">{children}</div>
+      <div className="mx-auto">{children}</div>
     </div>
   )
 }

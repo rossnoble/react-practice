@@ -7,7 +7,7 @@ type Props = {
 }
 
 export const Header = ({ isDark, onToggleDark }: Props) => (
-  <header className="relative border-b border-gray-800 bg-gray-700 px-2 py-2 dark:border-gray-700 dark:bg-gray-900">
+  <header className="relative border-b border-gray-800 bg-gray-700 px-4 py-2 dark:border-gray-700 dark:bg-gray-900">
     <div className="mx-auto flex max-w-2xl items-center justify-between">
       <h1 className="text-lg font-bold tracking-wider text-gray-900 uppercase transition-colors hover:text-blue-600 dark:text-gray-100 dark:hover:text-blue-400">
         <Link href="/" className="text-gray-50!">

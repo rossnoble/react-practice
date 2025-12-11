@@ -7,6 +7,7 @@ type Direction = 'N' | 'E' | 'S' | 'W'
 const ROBOT = '🤖'
 const ROWS = 10
 const COLUMNS = 10
+const CELL_SIZE = 48
 
 const grid = createGrid({ columns: COLUMNS, rows: ROWS })
 
@@ -23,11 +24,13 @@ type Mode = 'auto' | 'manual'
 type RoombaProps = {
   initialMode?: Mode
   initialDirection?: Direction
+  speed?: number
 }
 
 export function Roomba({
   initialDirection = 'N',
   initialMode = 'manual',
+  speed = 500,
 }: RoombaProps) {
   const [mode, setMode] = useState<Mode>(initialMode)
   const [direction, setDirection] = useState<Direction>(initialDirection)
@@ -61,7 +64,7 @@ export function Roomba({
 
     const intervalId = setInterval(() => {
       moveForward()
-    }, 800)
+    }, speed)
 
     return () => {
       clearInterval(intervalId)
@@ -91,7 +94,7 @@ export function Roomba({
   return (
     <div>
       <div
-        className="grid w-fit gap-0.5"
+        className="grid w-fit"
         style={{
           gridTemplateColumns: `repeat(${COLUMNS}, 1fr)`,
         }}
@@ -100,10 +103,26 @@ export function Roomba({
           <Cell
             direction={direction}
             coordinates={{ x, y }}
-            isRobot={coordinates.x === x && coordinates.y === y}
+            //isRobot={coordinates.x === x && coordinates.y === y}
+            isRobot={false}
             key={`${x}-${y}`}
           />
         ))}
+
+        {/* Roomba with absolute position to enable animations */}
+        <div
+          className="absolute transition-all ease-linear"
+          style={{
+            transform: `translate(${coordinates.x * CELL_SIZE}px, ${coordinates.y * CELL_SIZE}px) rotate(${getRotation(direction)}deg)`,
+            width: `${CELL_SIZE}px`,
+            height: `${CELL_SIZE}px`,
+            transitionDuration: `${speed}ms`,
+          }}
+        >
+          <div className="flex h-full w-full items-center justify-center rounded-full border-2 border-blue-600 bg-blue-400 text-center">
+            {ROBOT}
+          </div>
+        </div>
       </div>
 
       <div className="mt-8 flex items-center gap-4">
@@ -154,7 +173,8 @@ function Cell({
 
   return (
     <div
-      className={`flex size-12 items-center justify-center border-gray-200 bg-gray-100 text-sm text-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-700`}
+      className={`flex items-center justify-center border border-gray-200 bg-gray-100 text-sm text-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-700`}
+      style={{ width: `${CELL_SIZE}px`, height: `${CELL_SIZE}px` }}
       data-x={x}
       data-y={y}
     >

@@ -8,7 +8,7 @@ type Props = PropsWithChildren<{
 export function ChallengeLayout({ challenge, children }: Props) {
   return (
     <div>
-      <header className="border-b-1 border-gray-200 bg-gray-100 py-4 dark:border-gray-700 dark:bg-gray-800">
+      <header className="border-b-1 border-gray-200 bg-gray-100 px-4 py-4 md:px-0 dark:border-gray-700 dark:bg-gray-800">
         <div className="mx-auto max-w-2xl">
           <h2 className="mb-1 text-lg font-semibold">{challenge.title}</h2>
           {challenge.description && (
@@ -19,7 +19,7 @@ export function ChallengeLayout({ challenge, children }: Props) {
         </div>
       </header>
 
-      <div className="mx-auto mt-12 max-w-2xl">{children}</div>
+      <div className="mx-auto mt-12 max-w-2xl px-4 md:px-0">{children}</div>
     </div>
   )
 }
