@@ -64,6 +64,6 @@ export const challenges: Challenge[] = [
     id: 'temperature-converter',
     title: 'Temperature converter',
     description: 'Convert between Celsius and Fahrenheit',
-    status: 'not-started',
+    status: 'completed',
   },
 ]
