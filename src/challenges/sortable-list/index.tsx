@@ -35,8 +35,11 @@ type Props = {
 export function SortableList({ items: initialItems = items }: Props) {
   const [items, setItems] = useState(initialItems)
   const [draggedId, setDraggedId] = useState(-1)
+
   const [dragYStart, setDragYStart] = useState(0)
+  const [dragXStart, setDragXStart] = useState(0)
   const [mouseY, setMouseY] = useState(0)
+  const [mouseX, setMouseX] = useState(0)
 
   const itemRefs = useRef(new Map()) // { item.id: RefElement }
 
@@ -76,7 +79,9 @@ export function SortableList({ items: initialItems = items }: Props) {
     // These need to be set as the same time so that the "dragged" item
     // is positioned a the Y position when it was clicked (e.g. 0 offset)
     setDragYStart(ev.clientY)
+    setDragXStart(ev.clientX)
     setMouseY(ev.clientY)
+    setMouseX(ev.clientX)
   }
 
   useEffect(() => {
@@ -84,6 +89,7 @@ export function SortableList({ items: initialItems = items }: Props) {
 
     const onMouseMove = (ev: MouseEvent) => {
       setMouseY(ev.clientY)
+      setMouseX(ev.clientX)
     }
 
     const onMouseUp = (ev: MouseEvent) => {
@@ -104,6 +110,7 @@ export function SortableList({ items: initialItems = items }: Props) {
       setDraggedId(-1)
       setDragYStart(0)
       setMouseY(0)
+      setMouseX(0)
     }
 
     // Bind events to mousemove and mouseup
@@ -135,7 +142,7 @@ export function SortableList({ items: initialItems = items }: Props) {
           style={{
             transform:
               draggedId === item.id
-                ? `translateY(${mouseY - dragYStart}px)`
+                ? `translateY(${mouseY - dragYStart}px) translateX(${mouseX - dragXStart}px)`
                 : 'none',
           }}
           ref={el => {
