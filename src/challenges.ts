@@ -76,6 +76,6 @@ export const challenges: Challenge[] = [
     id: 'sortable-list',
     title: 'Sortable list',
     description: 'Drag-and-drop sortable to-do list',
-    status: 'not-started',
+    status: 'completed',
   },
 ]

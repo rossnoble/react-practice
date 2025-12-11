@@ -29,7 +29,6 @@ const generateMockData = (count: number): Company[] => {
 }
 
 const MOCK_DATA = generateMockData(500)
-console.log({ MOCK_DATA })
 
 export const searchAPI = (query: string): Promise<Company[]> => {
   const delay = Math.random() * 1000 // Random delay
