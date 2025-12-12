@@ -1,233 +1,163 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
-type Coordinates = { x: number; y: number }
-type Grid = Coordinates[]
 type Direction = 'N' | 'E' | 'S' | 'W'
+type Coordinates = { x: number; y: number }
 
-const ROBOT = '🤖'
-const ROWS = 10
-const COLUMNS = 10
-const CELL_SIZE = 48
+const grid = createGrid()
+const directions = ['N', 'E', 'S', 'W']
+const cellSize = 48
+const speed = 800
 
-const grid = createGrid({ columns: COLUMNS, rows: ROWS })
-
-const initialCoords = {
-  x: 3,
-  y: 3,
+const rotationLookup: Record<Direction, number> = {
+  N: 0,
+  E: 90,
+  S: 180,
+  W: 270,
 }
 
-// 0=North, 90=East, 180=South, 270=West
-const ORIENTATION = ['N', 'E', 'S', 'W'] // 0, 1, 2, 3
+export function Roomba() {
+  const [position, setPosition] = useState({ x: 5, y: 5 })
+  const [direction, setDirection] = useState<Direction>('N')
+  const [mode, setMode] = useState('manual')
 
-type Mode = 'auto' | 'manual'
+  const onMove = () => {
+    const next = getNextPosition(direction, position)
 
-type RoombaProps = {
-  initialMode?: Mode
-  initialDirection?: Direction
-  speed?: number
-}
-
-export function Roomba({
-  initialDirection = 'N',
-  initialMode = 'manual',
-  speed = 500,
-}: RoombaProps) {
-  const [mode, setMode] = useState<Mode>(initialMode)
-  const [direction, setDirection] = useState<Direction>(initialDirection)
-  const [coordinates, setCoordinates] = useState<Coordinates>(initialCoords)
-
-  const moveForward = () => {
-    const { x, y } = coordinates
-    let next = { ...coordinates }
-
-    if (direction === 'N') {
-      next.y = y - 1
-    } else if (direction === 'S') {
-      next.y = y + 1
-    } else if (direction === 'E') {
-      next.x = x + 1
-    } else if (direction === 'W') {
-      next.x = x - 1
-    }
-
-    // Handle wall bumps
-    if (next.x < 0 || next.x >= COLUMNS || next.y < 0 || next.y >= ROWS) {
-      turnRight()
+    // Handle walls and boundaries
+    if (next.x < 0 || next.x > 9 || next.y < 0 || next.y > 9) {
+      const randomIndex = Math.floor(Math.random() * 4)
+      const nextDir = directions[randomIndex] as Direction
+      setDirection(nextDir)
       return
     }
 
-    setCoordinates(next)
+    return setPosition(next)
   }
 
+  const onTurnRight = () => {
+    setDirection(prev => {
+      const currDirIndex = directions.findIndex(dir => dir === prev)
+
+      let nextDirIndex = currDirIndex + 1
+      if (nextDirIndex >= directions.length) {
+        nextDirIndex = 0
+      }
+
+      const nextDir = directions[nextDirIndex] as Direction
+      if (nextDir) {
+        return nextDir
+      }
+      return prev
+    })
+  }
+
+  const rotation = rotationLookup[direction] ?? 0
+
   useEffect(() => {
-    if (mode === 'manual') return
+    if (mode !== 'auto') return
 
     const intervalId = setInterval(() => {
-      moveForward()
+      onMove()
     }, speed)
 
     return () => {
       clearInterval(intervalId)
     }
-  }, [mode, coordinates, direction])
-
-  const turnRight = () => {
-    const nextDirection = getNextDirection(direction)
-    setDirection(nextDirection)
-  }
-
-  const handleResetClick = () => {
-    setCoordinates(initialCoords)
-    setDirection(initialDirection)
-    setMode(initialMode)
-  }
-
-  const toggleMode = () => {
-    setMode(prev => {
-      if (prev === 'manual') {
-        return 'auto'
-      }
-      return 'manual'
-    })
-  }
+  }, [mode, position, direction])
 
   return (
     <div>
-      <div
-        className="grid w-fit"
-        style={{
-          gridTemplateColumns: `repeat(${COLUMNS}, 1fr)`,
-        }}
-      >
+      <div className="relative grid w-max grid-cols-10 border border-gray-300">
         {grid.map(({ x, y }) => (
-          <Cell
-            direction={direction}
-            coordinates={{ x, y }}
-            //isRobot={coordinates.x === x && coordinates.y === y}
-            isRobot={false}
+          <div
             key={`${x}-${y}`}
-          />
-        ))}
-
-        {/* Roomba with absolute position to enable animations */}
-        <div
-          className="absolute transition-all ease-linear"
-          style={{
-            transform: `translate(${coordinates.x * CELL_SIZE}px, ${coordinates.y * CELL_SIZE}px) rotate(${getRotation(direction)}deg)`,
-            width: `${CELL_SIZE}px`,
-            height: `${CELL_SIZE}px`,
-            transitionDuration: `${speed}ms`,
-          }}
-        >
-          <div className="flex h-full w-full items-center justify-center rounded-full border-2 border-blue-600 bg-blue-400 text-center">
-            {ROBOT}
+            className="flex items-center justify-center border border-gray-100 text-gray-300"
+            style={{ width: `${cellSize}px`, height: `${cellSize}px` }}
+          >
+            {x},{y}
           </div>
-        </div>
+        ))}
+        <Marker rotation={rotation} position={position} />
       </div>
 
-      <div className="mt-8 flex items-center gap-4">
+      <div className="mt-8">
         <button
-          className="active:gray-200 border border-gray-300 bg-gray-100 px-3 py-2 text-sm active:bg-gray-200 active:text-gray-500 disabled:text-gray-400 dark:border-gray-700 dark:bg-gray-800"
-          onClick={() => moveForward()}
-          disabled={mode === 'auto'}
+          onClick={onMove}
+          className="border border-gray-300 bg-gray-100 px-4 py-2 hover:border-gray-400 active:bg-gray-200"
         >
-          Forward &uarr;
+          Forward
         </button>
         <button
-          className="active:gray-200 border border-gray-300 bg-gray-100 px-3 py-2 text-sm active:bg-gray-200 active:text-gray-500 disabled:text-gray-400 dark:border-gray-700 dark:bg-gray-800"
-          onClick={() => turnRight()}
-          disabled={mode === 'auto'}
+          onClick={onTurnRight}
+          className="border border-gray-300 bg-gray-100 px-4 py-2 hover:border-gray-400 active:bg-gray-200"
         >
-          Turn right &rarr;
+          Turn right
+        </button>
+        <button
+          onClick={() => setMode(prev => (prev === 'auto' ? 'manual' : 'auto'))}
+          className="border border-gray-300 bg-gray-100 px-4 py-2 hover:border-gray-400 active:bg-gray-200"
+        >
+          {mode}
         </button>
 
-        <button
-          className="active:gray-200 border border-gray-300 bg-gray-100 px-3 py-2 text-sm active:bg-gray-200 active:text-gray-500 disabled:text-gray-400 dark:border-gray-700 dark:bg-gray-800"
-          onClick={handleResetClick}
-        >
-          Reset
-        </button>
-        <button
-          className="active:gray-200 border border-gray-300 bg-gray-100 px-3 py-2 text-sm active:bg-gray-200 active:text-gray-500 disabled:text-gray-400 dark:border-gray-700 dark:bg-gray-800"
-          onClick={toggleMode}
-        >
-          {mode?.toUpperCase()}
-        </button>
-        <div>Direction: {direction}</div>
+        <p>
+          Current position: {position.x},{position.y}
+        </p>
+        <p>Current direction: {direction}</p>
       </div>
     </div>
   )
 }
 
-function Cell({
-  coordinates,
-  isRobot = false,
-  direction,
+function Marker({
+  rotation,
+  position,
 }: {
-  coordinates: Coordinates
-  isRobot: boolean
-  direction: Direction
+  rotation: number
+  position: Coordinates
 }) {
-  const { x, y } = coordinates
-  const rotation = getRotation(direction)
+  const left = position.x * cellSize
+  const top = position.y * cellSize
 
   return (
     <div
-      className={`flex items-center justify-center border border-gray-200 bg-gray-100 text-sm text-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-700`}
-      style={{ width: `${CELL_SIZE}px`, height: `${CELL_SIZE}px` }}
-      data-x={x}
-      data-y={y}
+      className="absolute flex items-center justify-center rounded-full border-3 border-gray-500 bg-gray-400 text-lg font-bold text-white shadow-sm/70 shadow-sky-500 transition-all ease-linear"
+      style={{
+        transform: `rotate(${rotation}deg)`,
+        width: `${cellSize}px`,
+        height: `${cellSize}px`,
+        left: `${left}px`,
+        top: `${top}px`,
+        transitionDuration: `${speed}ms`,
+      }}
     >
-      <div>
-        {isRobot ? (
-          <div
-            style={{ transform: `rotate(${rotation}deg)` }}
-            className="transition-all duration-300"
-          >
-            <div className="flex size-9 items-center justify-center rounded-full border-2 border-blue-600 bg-blue-400 text-center">
-              {ROBOT}
-            </div>
-          </div>
-        ) : (
-          <>
-            [{x},{y}]
-          </>
-        )}
+      <div className="mb-3 flex gap-2">
+        <div className="h-1 w-2 rounded-md bg-sky-600" />
+        <div className="h-1 w-2 rounded-md bg-sky-600" />
       </div>
     </div>
   )
 }
 
-function getNextDirection(current: Direction): Direction {
-  const currIndex = ORIENTATION.findIndex(v => v === current)
+// Create coords from 0,0 up to 9,9
+// [{ x: 0, y: 0 } ... { x: 9, y: 9 }]
+function createGrid() {
+  const coords = []
 
-  let nextIndex = currIndex + 1
-  if (nextIndex >= ORIENTATION.length) {
-    nextIndex = 0 // Start of array (e.g. "N")
-  }
-
-  return ORIENTATION[nextIndex] as Direction
-}
-
-function getRotation(direction: Direction) {
-  const degrees = {
-    N: 0,
-    E: 90,
-    S: 180,
-    W: 270,
-  }
-
-  return degrees[direction]
-}
-
-function createGrid({ columns = 10, rows = 10 }): Grid {
-  const grid: Grid = []
-
-  for (let y = 0; y < rows; y++) {
-    for (let x = 0; x < columns; x++) {
-      grid.push({ x, y })
+  for (let y = 0; y < 10; y++) {
+    for (let x = 0; x < 10; x++) {
+      coords.push({ x, y })
     }
   }
 
-  return grid
+  return coords
+}
+
+function getNextPosition(dir: Direction, coords: Coordinates) {
+  if (dir === 'N') return { ...coords, y: coords.y - 1 }
+  if (dir === 'E') return { ...coords, x: coords.x + 1 }
+  if (dir === 'S') return { ...coords, y: coords.y + 1 }
+  if (dir === 'W') return { ...coords, x: coords.x - 1 }
+
+  return coords
 }

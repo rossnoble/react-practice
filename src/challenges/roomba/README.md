@@ -12,7 +12,8 @@ Build a single-screen application that simulates a Roomba vacuum cleaner moving 
 
 ## Bonus features
 - [x] Auto-pilot mode (moves without buttons)
-- [ ] Smooth movement transitions
+- [x] Smooth movement transitions
+- [x] Randomize next direction when wall is hit
 - [ ] Keyboard controls (arrow keys instead of buttons)
 - [ ] Click cell to move Roomba there
 - [ ] Place obstacles inside grid
